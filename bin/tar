@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"skip .git"
+
+
+import os
+import sys
+
+
+"utilities"
+
+
+def popen(txt):
+    "run popen command."
+    for line in os.popen(txt).readlines():
+        print(line.rstrip())
+        sys.stdout.flush()
+
+
+"rutime"
+
+
+os.popen(r"tar zcvf nixm.tar.gz --exclude='nixm/\.git/*' nixm")
