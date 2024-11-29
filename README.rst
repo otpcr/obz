@@ -6,37 +6,36 @@
 
 **SYNOPSIS**
 
-| ``obx <cmd> [key=val] [key==val]``
-| ``obxc [-cviw]``
-| ``obxd`` 
-| ``obxs``
+| ``obz <cmd> [key=val] [key==val]``
+| ``obzd`` 
+| ``obzs``
 |
 
 **DESCRIPTION**
 
 
-*OBX* has all you need to program a unix cli program, such as disk
+*OBZ* has all you need to program a unix cli program, such as disk
 perisistence for configuration files, event handler to handle the
 client/server connection, deferred exception handling to not crash
 on an error, etc.
 
-*OBX* contains all the python3 code to program objects in a functional
+*OBZ* contains all the python3 code to program objects in a functional
 way. It provides a base Object class that has only dunder methods, all
 methods are factored out into functions with the objects as the first
 argument. It is called Object Programming (OP), OOP without the
 oriented.
 
-*OBX* allows for easy json save//load to/from disk of objects. It
+*OBZ* allows for easy json save//load to/from disk of objects. It
 provides an "clean namespace" Object class that only has dunder
 methods, so the namespace is not cluttered with method names. This
 makes storing and reading to/from json possible.
 
-*OBX* has a demo bot, it can connect to IRC, fetch and display RSS
+*OBZ* has a demo bot, it can connect to IRC, fetch and display RSS
 feeds, take todo notes, keep a shopping list and log text. You can
 also copy/paste the service file and run it under systemd for 24/7
 presence in a IRC channel.
 
-*OBX* is Public Domain.
+*OBZ* is Public Domain.
 
 
 **INSTALL**
@@ -44,42 +43,42 @@ presence in a IRC channel.
 
 installation is done with pipx
 
-| ``$ pipx install obx``
+| ``$ pipx install obz``
 | ``$ pipx ensurepath``
 |
 | <new terminal>
 |
-| ``$ obx srv > obx.service``
-| ``$ sudo mv obx.service /etc/systemd/system/``
-| ``$ sudo systemctl enable obx --now``
+| ``$ obz srv > obz.service``
+| ``$ sudo mv obz.service /etc/systemd/system/``
+| ``$ sudo systemctl enable obz --now``
 |
-| joins ``#obx`` on localhost
+| joins ``#obz`` on localhost
 |
 
 **USAGE**
 
-use ``obx`` to control the program, default it does nothing
+use ``obz`` to control the program, default it does nothing
 
-| ``$ obx``
+| ``$ obz``
 | ``$``
 |
 
 see list of commands
 
-| ``$ obx cmd``
+| ``$ obz cmd``
 | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
 | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
 |
 
 start daemon
 
-| ``$ obxd``
+| ``$ obzd``
 | ``$``
 |
 
 start service
 
-| ``$ obxs``
+| ``$ obzs``
 | ``<runs until ctrl-c>``
 |
 
@@ -112,39 +111,39 @@ here is a list of available commands
 
 irc
 
-| ``$ obx cfg server=<server>``
-| ``$ obx cfg channel=<channel>``
-| ``$ obx cfg nick=<nick>``
+| ``$ obz cfg server=<server>``
+| ``$ obz cfg channel=<channel>``
+| ``$ obz cfg nick=<nick>``
 |
 
 sasl
 
-| ``$ obx pwd <nsvnick> <nspass>``
-| ``$ obx cfg password=<frompwd>``
+| ``$ obz pwd <nsvnick> <nspass>``
+| ``$ obz cfg password=<frompwd>``
 |
 
 rss
 
-| ``$ obx rss <url>``
-| ``$ obx dpl <url> <item1,item2>``
-| ``$ obx rem <url>``
-| ``$ obx nme <url> <name>``
+| ``$ obz rss <url>``
+| ``$ obz dpl <url> <item1,item2>``
+| ``$ obz rem <url>``
+| ``$ obz nme <url> <name>``
 |
 
 opml
 
-| ``$ obx exp``
-| ``$ obx imp <filename>``
+| ``$ obz exp``
+| ``$ obz imp <filename>``
 |
 
 **WRITE YOUR OWN COMMAND**
 
-``obx`` runs it's modules in the package, so you have to clone from git
+``obz`` runs it's modules in the package, so you have to clone from git
 
-| ``$ git clone ssh://git@github.com/bthate/obx``
+| ``$ git clone ssh://git@github.com/otpcr/obz``
 |
 
-edit a file in obx/modules/<name>.py and add the following for ``hello world``
+edit a file in obz/modules/<name>.py and add the following for ``hello world``
 
 ::
 
@@ -152,10 +151,10 @@ edit a file in obx/modules/<name>.py and add the following for ``hello world``
         event.reply("hello world !!")
 
 
-save this and edit ``obx/modules/face.py`` and import your filename in
+save this and edit ``obz/modules/face.py`` and import your filename in
 there. install that with ``pipx install . --force``
 
-| ``$ obx hello
+| ``$ obz hello
 | ``hello world !!``
 
 
@@ -167,18 +166,18 @@ code, see the obx/modules directory for examples.
 **SOURCE**
 
 
-source is at `https://github.com/bthate/obx  <https://github.com/bthate/obx>`_
+source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz`_
 
 
 **FILES**
 
 
-| ``~/.obx``
-| ``~/.local/bin/obx``
-| ``~/.local/bin/obxc``
-| ``~/.local/bin/obxd``
-| ``~/.local/bin/obxs``
-| ``~/.local/pipx/venvs/obx/*``
+| ``~/.obz``
+| ``~/.local/bin/obz``
+| ``~/.local/bin/obzc``
+| ``~/.local/bin/obzd``
+| ``~/.local/bin/obzs``
+| ``~/.local/pipx/venvs/obz/*``
 |
 
 **AUTHOR**
@@ -188,5 +187,5 @@ source is at `https://github.com/bthate/obx  <https://github.com/bthate/obx>`_
 
 **COPYRIGHT**
 
-| *OBX* is Public Domain.
+| *OBZ* is Public Domain.
 |
