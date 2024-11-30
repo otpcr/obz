@@ -316,9 +316,6 @@ class Repeater(Timer):
         super().run()
 
 
-"utilities"
-
-
 def forever():
     while True:
         try:

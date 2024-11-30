@@ -17,12 +17,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.__main__ import Config, command, scan
-from obz.modules  import face
-from obz.object   import Object, parse
-from obz.persist  import NAME, Workdir, laps, skel
-from obz.runtime  import BufferedClient, Commands, Errors, Event
-from obz.runtime  import errors, later, launch
+from obz.main    import command
+from obz.modules import face
+from obz.object  import Config, Object, parse
+from obz.persist import NAME, Workdir, laps, skel
+from obz.runtime import BufferedClient, Commands, Errors, Event
+from obz.runtime import errors, later, launch, scan
 
 
 cfg = Config()
