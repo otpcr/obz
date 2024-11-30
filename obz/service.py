@@ -12,8 +12,8 @@ from .runtime import errors, forever, privileges, scan, wrap
 def service():
     privileges()
     pidfile(pidname(NAME))
-    from .modules import face
-    scan(face, init=True)
+    from .modules import face as mods
+    scan(mods, init=True)
     forever()
 
 
