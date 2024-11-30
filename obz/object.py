@@ -32,11 +32,6 @@ class Obj(Object):
         return self.__dict__.get(key, "")
 
 
-class Config(Obj):
-
-    pass
-
-
 def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
@@ -114,7 +109,7 @@ def match(obj, txt):
             yield key
 
 
-def parse(obj, txt=None):
+def parse(obj, txt=None) -> None:
     if txt is None:
         txt = ""
     args = []
@@ -273,7 +268,6 @@ def dumps(*args, **kw):
 
 def __dir__():
     return (
-        'Config',
         'Object',
         'Obj',
         'construct',
