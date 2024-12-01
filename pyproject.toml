@@ -24,7 +24,7 @@ classifiers = [
 
 
 [project.scripts]
-'obz'  = 'obz.main:wrapped'
+'obz'  = 'obz.control:wrapped'
 'obzd' = 'obz.daemon:main'
 'obzs' = 'obz.service:wrapped'
 

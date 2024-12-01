@@ -17,7 +17,7 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.main    import command
+from obz.control import command
 from obz.modules import face
 from obz.object  import Config, Object, parse
 from obz.persist import NAME, Workdir, laps, skel

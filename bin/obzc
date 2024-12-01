@@ -16,7 +16,7 @@ import time
 sys.path.insert(0, os.getcwd())
 
 
-from obz.main    import command, scan
+from obz.control import command, scan
 from obz.object  import Config, parse
 from obz.persist import NAME, Workdir
 from obz.modules import face

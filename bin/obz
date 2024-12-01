@@ -1,1 +1,1 @@
-python3 -m obz $* ;
+python3 -m obz.control $* ;
