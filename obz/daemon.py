@@ -9,7 +9,7 @@ import os
 import sys
 
 
-from .persist import NAME, pidfile, pidname
+from .persist import Config, pidfile, pidname
 from .runtime import errors, forever, privileges, scan, wrap
 
 
@@ -42,7 +42,7 @@ def wrapped():
 def main():
     daemon(True)
     privileges()
-    pidfile(pidname(NAME))
+    pidfile(pidname(Config.name))
     from .modules import face
     scan(face, init=True)
     forever()

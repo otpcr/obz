@@ -5,13 +5,13 @@
 "service"
 
 
-from .persist import NAME, pidfile, pidname
+from .persist import Config, pidfile, pidname
 from .runtime import errors, forever, privileges, scan, wrap
 
 
 def service():
     privileges()
-    pidfile(pidname(NAME))
+    pidfile(pidname(Config.name))
     from .modules import face as mods
     scan(mods, init=True)
     forever()

@@ -17,9 +17,9 @@ sys.path.insert(0, os.getcwd())
 
 
 from obz.control import command, scan
-from obz.object  import Config, parse
-from obz.persist import NAME, Workdir
 from obz.modules import face
+from obz.parse   import parse
+from obz.persist import Config
 from obz.runtime import Client, Errors, Event, errors, forever, later
 
 
@@ -27,6 +27,7 @@ cfg  = Config()
 
 
 class Console(Client):
+
 
     def __init__(self):
         Client.__init__(self)
@@ -48,7 +49,7 @@ class Console(Client):
 
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
-    print(f"{NAME.upper()} since {tme}")
+    print(f"{cfg.name.upper()} since {tme}")
 
 
 def wrap(func):

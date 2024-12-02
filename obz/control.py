@@ -5,15 +5,16 @@
 "main"
 
 
+import os
 import sys
 
 
-from .object  import Config, parse
-from .persist import NAME
+from .parse   import parse
+from .persist import Config
 from .runtime import Client, Commands, Event, errors, later, scan, wrap
 
 
-Cfg  = Config()
+Cfg = Config()
 
 
 class CLI(Client):
