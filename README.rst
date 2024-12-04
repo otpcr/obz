@@ -1,7 +1,7 @@
 **NAME**
 
 
-*OBX* - program your own commands.
+*OBZ* - Object Shell
 
 
 **SYNOPSIS**
@@ -19,23 +19,23 @@ perisistence for configuration files, event handler to handle the
 client/server connection, deferred exception handling to not crash
 on an error, etc.
 
-*OBZ* contains all the python3 code to program objects in a functional
+*OBX* contains all the python3 code to program objects in a functional
 way. It provides a base Object class that has only dunder methods, all
 methods are factored out into functions with the objects as the first
 argument. It is called Object Programming (OP), OOP without the
 oriented.
 
-*OBZ* allows for easy json save//load to/from disk of objects. It
+*OBX* allows for easy json save//load to/from disk of objects. It
 provides an "clean namespace" Object class that only has dunder
 methods, so the namespace is not cluttered with method names. This
 makes storing and reading to/from json possible.
 
-*OBZ* has a demo bot, it can connect to IRC, fetch and display RSS
+*OBZ* is a demo bot, it can connect to IRC, fetch and display RSS
 feeds, take todo notes, keep a shopping list and log text. You can
 also copy/paste the service file and run it under systemd for 24/7
 presence in a IRC channel.
 
-*OBZ* is Public Domain.
+*OBX/OBZ* is Public Domain.
 
 
 **INSTALL**
@@ -154,7 +154,7 @@ edit a file in obz/modules/<name>.py and add the following for ``hello world``
 save this and edit ``obz/modules/face.py`` and import your filename in
 there. install that with ``pipx install . --force``
 
-| ``$ obz hello
+| ``$ obz hello``
 | ``hello world !!``
 
 
@@ -166,7 +166,7 @@ code, see the obx/modules directory for examples.
 **SOURCE**
 
 
-source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz`_
+source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz>`_
 
 
 **FILES**
@@ -174,7 +174,6 @@ source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz`_
 
 | ``~/.obz``
 | ``~/.local/bin/obz``
-| ``~/.local/bin/obzc``
 | ``~/.local/bin/obzd``
 | ``~/.local/bin/obzs``
 | ``~/.local/pipx/venvs/obz/*``

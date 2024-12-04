@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "obz"
 description = "Object Shell"
-version = "10"
+version = "3"
 authors = [
     {name = "Bart Thate",email = "bthate@dds.nl"},
 ]
