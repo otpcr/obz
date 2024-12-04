@@ -1,7 +1,7 @@
 **NAME**
 
 
- **OBZ** - Object Shell
+``OBZ`` - Object Shell
 
 
 **SYNOPSIS**
