@@ -9,9 +9,9 @@ import os
 import sys
 
 
-from .parse   import parse
 from .persist import Config
-from .runtime import Client, Commands, Event, errors, later, scan, wrap
+from .runtime import Client, Commands, Event
+from .runtime import command, parse, errors, later, scan, wrap
 
 
 Cfg = Config()
@@ -19,26 +19,8 @@ Cfg = Config()
 
 class CLI(Client):
 
-    def __init__(self):
-        Client.__init__(self)
-        self.register("command", command)
-
     def raw(self, txt):
         print(txt)
-
-
-def command(bot, evt):
-    parse(evt, evt.txt)
-    if "ident" in dir(bot):
-        evt.orig = bot.ident
-    func = Commands.cmds.get(evt.cmd, None)
-    if func:
-        try:
-            func(evt)
-            bot.display(evt)
-        except Exception as ex:
-            later(ex)
-    evt.ready()
 
 
 def wrapped():

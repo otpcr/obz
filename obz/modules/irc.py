@@ -19,9 +19,8 @@ import _thread
 from obx import Object, edit, format, keys
 
 
-from ..runtime  import Commands, Event, Reactor, later, launch
-from ..parse    import parse
 from ..persist  import Config, Cache, ident, last, write
+from ..runtime  import Commands, Event, Reactor, later, launch, parse
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
