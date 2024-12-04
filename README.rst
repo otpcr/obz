@@ -151,8 +151,9 @@ edit a file in obz/modules/<name>.py and add the following for ``hello world``
         event.reply("hello world !!")
 
 
-save this and edit ``obz/modules/face.py`` and import your filename in
-there. install that with ``pipx install . --force``
+save this and edit ``obz/modules/face.py`` and import your filename in there.
+install that with ``pipx install . --force``, your program can execute the
+``hello`` command now.
 
 | ``$ obz hello``
 | ``hello world !!``
