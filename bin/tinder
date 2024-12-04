@@ -17,12 +17,13 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.control import command
+from obx import Object
+
+
 from obz.modules import face
-from obz.object  import Config, Object, parse
-from obz.persist import NAME, Workdir, laps, skel
+from obz.persist import Config, laps, skel
 from obz.runtime import BufferedClient, Commands, Errors, Event
-from obz.runtime import errors, later, launch, scan
+from obz.runtime import errors, later, launch, parse, scan
 
 
 cfg = Config()
@@ -65,10 +66,6 @@ param.ver = [""]
 
 class CLI(BufferedClient):
 
-    def __init__(self):
-        BufferedClient.__init__(self)
-        self.register("command", command)
-
     def raw(self, txt):
         if "v" in cfg.opts:
             print(txt)
@@ -77,7 +74,7 @@ class CLI(BufferedClient):
 
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
-    print(f"{NAME.upper()} since {tme}")
+    print(f"{Config.name.upper()} since {tme}")
 
 
 def consume(evts):
@@ -121,15 +118,15 @@ def wrap(function):
 
 
 def main():
-    Workdir.wdr = ".test"
+    Config.wdr = ".test"
     parse(cfg, " ".join(sys.argv[1:]))
     scan(face)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()
     if "f" not in cfg.opts:
-        if os.path.exists(Workdir.wdr):
-            shutil.rmtree(Workdir.wdr)
+        if os.path.exists(Config.wdr):
+            shutil.rmtree(Config.wdr)
     skel()
     clt = CLI()
     clt.start()
