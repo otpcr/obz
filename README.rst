@@ -187,7 +187,7 @@ source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz>`_
 | ``~/.local/bin/obzd``
 | ``~/.local/bin/obzs``
 | ``~/.local/pipx/venvs/obz/*``
-
+|
 
 **AUTHOR**
 
