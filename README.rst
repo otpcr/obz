@@ -155,9 +155,11 @@ save this and edit ``obz/modules/face.py`` and import your filename in there.
 install that with ``pipx install . --force``, your program can execute the
 ``hello`` command now.
 
+
+|
 | ``$ obz hello``
 | ``hello world !!``
-
+|
 
 commands run in their own thread, errors are deferred to not have loops
 blocking/breaking on exception and can contain your own written python3
