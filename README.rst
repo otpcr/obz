@@ -1,7 +1,7 @@
 **NAME**
 
 
-*OBZ* - Object Shell
+ **OBZ** - Object Shell
 
 
 **SYNOPSIS**
@@ -14,28 +14,28 @@
 **DESCRIPTION**
 
 
-*OBZ* has all you need to program a unix cli program, such as disk
+``OBZ`` has all you need to program a unix cli program, such as disk
 perisistence for configuration files, event handler to handle the
 client/server connection, deferred exception handling to not crash
 on an error, etc.
 
-*OBX* contains all the python3 code to program objects in a functional
+``OBX`` contains all the python3 code to program objects in a functional
 way. It provides a base Object class that has only dunder methods, all
 methods are factored out into functions with the objects as the first
 argument. It is called Object Programming (OP), OOP without the
 oriented.
 
-*OBX* allows for easy json save//load to/from disk of objects. It
+``OBX`` allows for easy json save//load to/from disk of objects. It
 provides an "clean namespace" Object class that only has dunder
 methods, so the namespace is not cluttered with method names. This
 makes storing and reading to/from json possible.
 
-*OBZ* is a demo bot, it can connect to IRC, fetch and display RSS
+``OBZ`` is a demo bot, it can connect to IRC, fetch and display RSS
 feeds, take todo notes, keep a shopping list and log text. You can
 also copy/paste the service file and run it under systemd for 24/7
 presence in a IRC channel.
 
-*OBX/OBZ* is Public Domain.
+``OBX/OBZ`` is Public Domain.
 
 
 **INSTALL**
