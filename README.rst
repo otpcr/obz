@@ -6,6 +6,7 @@
 
 **SYNOPSIS**
 
+
 | ``obz <cmd> [key=val] [key==val]``
 | ``obzd`` 
 | ``obzs``
@@ -55,7 +56,9 @@ installation is done with pipx
 | joins ``#obz`` on localhost
 |
 
+
 **USAGE**
+
 
 use ``obz`` to control the program, default it does nothing
 
@@ -85,6 +88,7 @@ start service
 
 **COMMANDS**
 
+
 here is a list of available commands
 
 | ``cfg`` - irc configuration
@@ -108,6 +112,7 @@ here is a list of available commands
 |
 
 **CONFIGURATION**
+
 
 irc
 
@@ -136,7 +141,9 @@ opml
 | ``$ obz imp <filename>``
 |
 
-**WRITE YOUR OWN COMMAND**
+
+**PROGRAMMING**
+
 
 ``obz`` runs it's modules in the package, so you have to clone from git
 
@@ -180,14 +187,16 @@ source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz>`_
 | ``~/.local/bin/obzd``
 | ``~/.local/bin/obzs``
 | ``~/.local/pipx/venvs/obz/*``
-|
+
 
 **AUTHOR**
+
 
 | Bart Thate <``bthate@dds.nl``>
 |
 
 **COPYRIGHT**
 
-| *OBZ* is Public Domain.
+
+| ``OBZ`` is Public Domain.
 |
