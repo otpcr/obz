@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "obz"
 description = "Object Shell"
-version = "3"
+version = "4"
 authors = [
     {name = "Bart Thate",email = "bthate@dds.nl"},
 ]
@@ -42,4 +42,3 @@ packages = [
     "obz",
     "obz.modules"
 ]
-zip-safe=true

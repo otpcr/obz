@@ -7,6 +7,7 @@
 **SYNOPSIS**
 
 
+|
 | ``obz <cmd> [key=val] [key==val]``
 | ``obzd`` 
 | ``obzs``
@@ -44,6 +45,7 @@ presence in a IRC channel.
 
 installation is done with pipx
 
+|
 | ``$ pipx install obz``
 | ``$ pipx ensurepath``
 |
@@ -62,12 +64,14 @@ installation is done with pipx
 
 use ``obz`` to control the program, default it does nothing
 
+|
 | ``$ obz``
 | ``$``
 |
 
 see list of commands
 
+|
 | ``$ obz cmd``
 | ``cfg,cmd,dne,dpl,err,exp,imp,log,mod,mre,nme,``
 | ``now,pwd,rem,req,res,rss,srv,syn,tdo,thr,upt``
@@ -75,12 +79,14 @@ see list of commands
 
 start daemon
 
+|
 | ``$ obzd``
 | ``$``
 |
 
 start service
 
+|
 | ``$ obzs``
 | ``<runs until ctrl-c>``
 |
@@ -91,6 +97,7 @@ start service
 
 here is a list of available commands
 
+|
 | ``cfg`` - irc configuration
 | ``cmd`` - commands
 | ``dpl`` - sets display items
@@ -116,6 +123,7 @@ here is a list of available commands
 
 irc
 
+|
 | ``$ obz cfg server=<server>``
 | ``$ obz cfg channel=<channel>``
 | ``$ obz cfg nick=<nick>``
@@ -123,12 +131,14 @@ irc
 
 sasl
 
+|
 | ``$ obz pwd <nsvnick> <nspass>``
 | ``$ obz cfg password=<frompwd>``
 |
 
 rss
 
+|
 | ``$ obz rss <url>``
 | ``$ obz dpl <url> <item1,item2>``
 | ``$ obz rem <url>``
@@ -137,6 +147,7 @@ rss
 
 opml
 
+|
 | ``$ obz exp``
 | ``$ obz imp <filename>``
 |
@@ -147,6 +158,7 @@ opml
 
 ``obz`` runs it's modules in the package, so you have to clone from git
 
+|
 | ``$ git clone ssh://git@github.com/otpcr/obz``
 |
 
@@ -181,7 +193,7 @@ source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz>`_
 
 **FILES**
 
-
+|
 | ``~/.obz``
 | ``~/.local/bin/obz``
 | ``~/.local/bin/obzd``
@@ -191,12 +203,12 @@ source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz>`_
 
 **AUTHOR**
 
-
+|
 | Bart Thate <``bthate@dds.nl``>
 |
 
 **COPYRIGHT**
 
-
+|
 | ``OBZ`` is Public Domain.
 |
