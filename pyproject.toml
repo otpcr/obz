@@ -8,15 +8,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "obz"
 description = "Object Shell"
-version = "4"
+version = "5"
 authors = [
     {name = "Bart Thate",email = "bthate@dds.nl"},
 ]
 readme = "README.rst"
 license = {text="Public Domain"}
-dependencies = [
-    "obx",
-]
 classifiers = [ 
     'Development Status :: 3 - Alpha',
     'License :: Public Domain',
