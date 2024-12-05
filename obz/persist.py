@@ -14,7 +14,7 @@ import uuid
 import _thread
 
 
-from obx import Object, dump, load, search, update
+from .object import Object, dump, load, search, update
 
 
 cachelock = _thread.allocate_lock()

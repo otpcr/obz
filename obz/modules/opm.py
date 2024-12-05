@@ -12,9 +12,7 @@ import uuid
 import _thread
 
 
-from obx import Object, update
-
-
+from ..object  import Object, update
 from ..persist import find, ident, spl, write
 
 

@@ -16,9 +16,7 @@ import time
 import _thread
 
 
-from obx import Object, edit, format, keys
-
-
+from ..object import Object, edit, format, keys
 from ..persist import Cache, ident, last, write
 from ..persist import Config as Main
 from ..runtime import Commands, Event, Reactor, later, launch, parse

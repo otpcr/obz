@@ -19,9 +19,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from obx import Object, format, update
-
-
+from ..object  import Object, format, update
 from ..persist import Cache, find, fntime, laps, last, ident, spl, write
 from ..runtime import Repeater, launch
 

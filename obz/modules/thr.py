@@ -9,9 +9,7 @@ import threading
 import time
 
 
-from obx import Object, update
-
-
+from ..object  import Object, update
 from ..persist import laps
 
 

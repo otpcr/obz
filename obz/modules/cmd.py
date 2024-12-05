@@ -5,9 +5,7 @@
 "commands"
 
 
-from obx import keys
-
-
+from ..object  import keys
 from ..runtime import Commands
 
 

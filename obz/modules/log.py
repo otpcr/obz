@@ -8,9 +8,7 @@
 import time
 
 
-from obx import Object
-
-
+from ..object  import Object
 from ..persist import find, fntime, ident, laps, write
 
 
