@@ -5,15 +5,12 @@
 "main"
 
 
-import readline
 import sys
-import termios
-import time
 
 
 from .persist import Config
 from .runtime import Client, Commands, Event
-from .runtime import command, errors, forever, later, parse, scan, wrap
+from .runtime import command, errors, parse, scan, wrap
 
 
 Cfg = Config()
@@ -34,7 +31,7 @@ def wrapped():
 def srv(event):
     import getpass
     name = getpass.getuser()
-    event.reply(TXT % (Cfg.name.upper(), name, name, name, Cfg.name.upper()))
+    event.reply(TXT % (Cfg.name.upper(), name, name, name, Cfg.name))
 
 
 def main():

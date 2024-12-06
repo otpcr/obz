@@ -245,8 +245,8 @@ class Event(Default):
 
     def wait(self):
         self._ready.wait()
-        #if self._thr:
-        #    self._thr.join()
+        if self._thr:
+            self._thr.join()
 
 
 def parse(obj, txt=None) -> None:
