@@ -20,8 +20,7 @@ def __dir__():
         'opm',
         'rss',
         'tdo',
-        'thr',
-        'upt'
+        'thr'
     )
 
 
