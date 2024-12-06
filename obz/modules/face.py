@@ -6,7 +6,7 @@
 "interface"
 
 
-from . import cmd, err, fnd, irc, log, mod, opm, rss, tdo, thr, upt
+from . import cmd, err, fnd, irc, log, mod, opm, req, rss, tdo, thr, upt
 
 
 def __dir__():
@@ -18,6 +18,7 @@ def __dir__():
         'log',
         'mod',
         'opm',
+        'req',
         'rss',
         'tdo',
         'thr'
