@@ -37,7 +37,7 @@ feeds, take todo notes, keep a shopping list and log text. You can
 also copy/paste the service file and run it under systemd for 24/7
 presence in a IRC channel.
 
-``OBX/OBZ`` is Public Domain.
+``OBZ`` is Public Domain.
 
 
 **INSTALL**
