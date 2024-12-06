@@ -5,10 +5,11 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+
 [project]
 name = "obz"
-description = "Object Shell"
-version = "5"
+description = "write your own commands"
+version = "6"
 authors = [
     {name = "Bart Thate",email = "bthate@dds.nl"},
 ]
@@ -33,6 +34,7 @@ classifiers = [
 "home" = "https://pypi.org/project/obz"
 "bugs" = "https://github.com/otpcr/obz/issues"
 "source" = "https://github.com/otpcr/obz"
+
 
 [tool.setuptools]
 packages = [

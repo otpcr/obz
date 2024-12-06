@@ -1,7 +1,7 @@
 **NAME**
 
 
-``OBZ`` - Object Shell
+``OBZ`` - write your own commands
 
 
 **SYNOPSIS**
