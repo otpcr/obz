@@ -2,7 +2,14 @@
 # pylint: disable=C,R,W0105,W0622
 
 
-"a clean namespace"
+"""a clean namespace
+
+
+obx allows for easy json loads/dumps of objects, it provides
+an “clean namespace” Object class that only has dunder method
+so the namespace is not cluttered with method names.
+
+"""
 
 
 import json
@@ -10,7 +17,8 @@ import json
 
 class Object:
 
-    pass
+    def __str__(self):
+        return str(self.__dict__)
 
 
 def construct(obj, *args, **kwargs):
@@ -70,6 +78,12 @@ def format(obj, args=None, skip=None, plain=False):
             txt += f'{key}={value} '
     return txt.strip()
 
+
+def fqn(obj):
+    kin = str(type(obj)).split()[-1][1:-2]
+    if kin == "type":
+        kin = f"{obj.__module__}.{obj.__name__}"
+    return kin
 
 def items(obj):
     if isinstance(obj,type({})):
@@ -140,12 +154,6 @@ def hook(objdict):
     return obj
 
 
-def load(fpt, *args, **kw):
-    kw["cls"] = ObjectDecoder
-    kw["object_hook"] = hook
-    return json.load(fpt, *args, **kw)
-
-
 def loads(string, *args, **kw):
     kw["cls"] = ObjectDecoder
     kw["object_hook"] = hook
@@ -181,11 +189,25 @@ class ObjectEncoder(json.JSONEncoder):
         return json.JSONEncoder.iterencode(self, o, _one_shot)
 
 
-def dump(*args, **kw):
-    kw["cls"] = ObjectEncoder
-    return json.dump(*args, **kw)
-
-
 def dumps(*args, **kw):
     kw["cls"] = ObjectEncoder
     return json.dumps(*args, **kw)
+
+
+def __dir__():
+    return (
+        'Object',
+        'construct',
+        'dumps',
+        'edit',
+        'format',
+        'hook',
+        'ident',
+        'items',
+        'keys',
+        'loads',
+        'match',
+        'search',
+        'update',
+        'values'
+    )

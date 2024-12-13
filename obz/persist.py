@@ -14,7 +14,7 @@ import uuid
 import _thread
 
 
-from .object import Object, dump, load, search, update
+from .object import Object, dumps, loads, search, update
 
 
 cachelock = _thread.allocate_lock()
@@ -256,7 +256,8 @@ def fetch(obj, pth):
     with lock:
         with open(pth, 'r', encoding='utf-8') as ofile:
             try:
-                update(obj, load(ofile))
+                oo = loads(ofile.read())
+                update(obj, oo)
             except json.decoder.JSONDecodeError as ex:
                 raise Exception(pth) from ex
 
@@ -273,9 +274,9 @@ def write(obj, pth=None):
 def sync(obj, pth):
     with lock:
         cdir(pth)
+        txt = dumps(obj, indent=4)
         with open(pth, 'w', encoding='utf-8') as ofile:
-            dump(obj, ofile, indent=4)
-
+            ofile.write(txt)
 
 "interface"
 
