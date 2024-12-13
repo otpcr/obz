@@ -10,8 +10,8 @@ import termios
 import time
 
 from .persist import Config
-from .runtime import Client, Commands, Event
-from .runtime import command, errors, forever, later, parse, scan, wrap
+from .runtime import Client, Event
+from .runtime import errors, forever, later, parse, scan
 
 
 cfg = Config()

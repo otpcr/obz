@@ -99,7 +99,7 @@ def modloop(*pkgs, disable=""):
 def scan(*pkgs, init=False, disable=""):
     result = []
     for mod in modloop(*pkgs, disable=disable):
-        if type(mod) != types.ModuleType:
+        if type(mod) is not types.ModuleType:
             continue
         Commands.scan(mod)
         thr = None
