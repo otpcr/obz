@@ -9,8 +9,9 @@ import os
 import sys
 
 
+from .command import scan
 from .persist import Config, pidfile, pidname
-from .runtime import errors, forever, privileges, scan, wrap
+from .runtime import errors, forever, wrap
 
 
 def daemon(verbose=False):
@@ -31,6 +32,14 @@ def daemon(verbose=False):
     os.umask(0)
     os.chdir("/")
     os.nice(10)
+
+
+def privileges():
+    import pwd
+    import getpass
+    pwnam2 = pwd.getpwnam(getpass.getuser())
+    os.setgid(pwnam2.pw_gid)
+    os.setuid(pwnam2.pw_uid)
 
 
 def wrapped():

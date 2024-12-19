@@ -1,12 +1,11 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0212,W0718
+# pylint: disable=C,R,W0105,W0212,W0718,E0402
 
 
 "commands"
 
 
 import inspect
-import threading
 import types
 
 
@@ -149,7 +148,6 @@ def spl(txt):
 def __dir__():
     return (
         'Commands',
-        'Event',
         'parse',
         'scan'
     )

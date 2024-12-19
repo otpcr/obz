@@ -17,11 +17,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
+from obz.client  import Client, Event
+from obz.command import Commands, parse, scan
 from obz.modules import face
-from obz.object import Object
+from obz.object  import Object
 from obz.persist import Config, laps, skel
-from obz.runtime import BufferedClient, Commands, Errors, Event
-from obz.runtime import errors, later, launch, parse, scan
+from obz.runtime import errors, later, launch
 
 
 cfg = Config()
@@ -33,9 +34,6 @@ NRS = 1
 NRCOMMAND = 1
 PERCALL   = 1
 STARTTIME = time.time()
-
-
-face.rss.DEBUG = True
 
 
 events = []
@@ -62,7 +60,10 @@ param.tdo = ["mekker", ""]
 param.ver = [""]
 
 
-class CLI(BufferedClient):
+class CLI(Client):
+
+    def dosay(self, channel, txt):
+        print(txt)
 
     def raw(self, txt):
         if "v" in cfg.opts:
@@ -118,6 +119,7 @@ def wrap(function):
 def main():
     Config.wdr = ".test"
     parse(cfg, " ".join(sys.argv[1:]))
+    face.rss.DEBUG = True
     scan(face)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
@@ -135,13 +137,14 @@ def main():
     for thr in thrs:
         thr.join()
     consume(events)
+    time.sleep(0.1)
     clt.wait()
     clt.stop()
     endtime = time.time()
     lap = laps(endtime-STARTTIME)
     percall = (endtime-STARTTIME)/(nrs*nrcommands)
     print(f"{lap} {nrs} {nrcommands} {percall}")
-    if not Errors.errors:
+    if not errors():
         print("no errors")
 
 

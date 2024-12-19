@@ -5,8 +5,21 @@
 "service"
 
 
+import os
+
+
+from .command import scan
 from .persist import Config, pidfile, pidname
-from .runtime import errors, forever, privileges, scan, wrap
+from .runtime import errors, forever, wrap
+
+
+def privileges():
+    import getpass
+    import pwd
+    pwnam2 = pwd.getpwnam(getpass.getuser())
+    os.setgid(pwnam2.pw_gid)
+    os.setuid(pwnam2.pw_uid)
+
 
 
 def service():
