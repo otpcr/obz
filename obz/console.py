@@ -9,9 +9,11 @@ import sys
 import termios
 import time
 
+
+from .client  import Client, Event
+from .command import parse, scan
 from .persist import Config
-from .runtime import Client, Event
-from .runtime import errors, forever, later, parse, scan
+from .runtime import errors, forever, later
 
 
 cfg = Config()

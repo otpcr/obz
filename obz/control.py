@@ -8,9 +8,10 @@
 import sys
 
 
+from .client  import Client, Event
+from .command import Commands, command, parse, scan
 from .persist import Config
-from .runtime import Client, Commands, Event
-from .runtime import command, errors, parse, scan, wrap
+from .runtime import errors, wrap
 
 
 Cfg = Config()

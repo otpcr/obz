@@ -256,8 +256,8 @@ def fetch(obj, pth):
     with lock:
         with open(pth, 'r', encoding='utf-8') as ofile:
             try:
-                oo = loads(ofile.read())
-                update(obj, oo)
+                obj2 = loads(ofile.read())
+                update(obj, obj2)
             except json.decoder.JSONDecodeError as ex:
                 raise Exception(pth) from ex
 

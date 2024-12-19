@@ -2,14 +2,7 @@
 # pylint: disable=C,R,W0105,W0622
 
 
-"""a clean namespace
-
-
-obx allows for easy json loads/dumps of objects, it provides
-an “clean namespace” Object class that only has dunder method
-so the namespace is not cluttered with method names.
-
-"""
+"a clean namespace"
 
 
 import json
