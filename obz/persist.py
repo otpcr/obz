@@ -200,14 +200,6 @@ def shortid():
     return str(uuid.uuid4())[:8]
 
 
-def spl(txt):
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
-
-
 def strip(pth, nmr=3):
     return os.sep.join(pth.split(os.sep)[-nmr:])
 

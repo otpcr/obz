@@ -12,8 +12,9 @@ import uuid
 import _thread
 
 
+from ..command import spl
 from ..object  import Object, update
-from ..persist import find, ident, spl, write
+from ..persist import find, ident, write
 
 
 from .rss import Rss

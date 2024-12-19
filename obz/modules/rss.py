@@ -19,8 +19,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
+from ..command import spl
 from ..object  import Object, format, update
-from ..persist import Cache, find, fntime, laps, last, ident, spl, write
+from ..persist import Cache, find, fntime, laps, last, ident, write
 from ..runtime import Repeater, launch
 
 

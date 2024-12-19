@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0212,W0718,E0402
+# pylint: disable=C,R0902,W0613,W0223
 
 
 "client"
@@ -20,8 +20,12 @@ class Output:
     def __init__(self):
         self.oqueue = queue.Queue()
 
+    def display(self, evt):
+        for txt in evt.result:
+            self.raw(txt)
+
     def dosay(self, channel, txt):
-        raise NotImplementedError
+        self.raw(txt)
 
     def oput(self, channel, txt):
         self.oqueue.put((channel, txt))
@@ -35,6 +39,9 @@ class Output:
             self.dosay(channel, txt)
             self.oqueue.task_done()
 
+    def raw(self, txt):
+        raise NotImplementedError
+
     def start(self):
         launch(self.output)
 
@@ -45,7 +52,6 @@ class Output:
         self.oqueue.join()
 
 
-
 class Client(Output, Reactor):
 
     def __init__(self):
@@ -53,13 +59,6 @@ class Client(Output, Reactor):
         Reactor.__init__(self)
         self.register("command", command)
 
-    def display(self, evt):
-        for txt in evt.result:
-            self.raw(txt)
-
-    def raw(self, txt):
-        raise NotImplementedError
- 
     def start(self):
         Output.start(self)
         Reactor.start(self)

@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "obz"
 description = "write your own commands"
-version = "6"
+version = "7"
 authors = [
     {name = "Bart Thate",email = "bthate@dds.nl"},
 ]
@@ -26,6 +26,7 @@ classifiers = [
 
 [project.scripts]
 'obz'  = 'obz.control:wrapped'
+'obzc' = 'obz.console:wrapped'
 'obzd' = 'obz.daemon:main'
 'obzs' = 'obz.service:wrapped'
 
