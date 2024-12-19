@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,E0402
+# pylint: disable=C0116
 
 
 "uptime"

@@ -1,5 +1,5 @@
 # This file is in the Public Domain.
-# pylint: disable=C0116,C0415,E0402
+# pylint: disable=C
 
 
 "service"

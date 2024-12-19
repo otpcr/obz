@@ -1,13 +1,11 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105,E0402
+# pylint: disable=C,W0105
 
 
 "OPML"
 
 
-import html
 import os
-import re
 import uuid
 import _thread
 
@@ -102,20 +100,6 @@ def attrs(obj, txt):
 
 def shortid():
     return str(uuid.uuid4())[:8]
-
-
-def striphtml(text):
-    clean = re.compile('<.*?>')
-    return re.sub(clean, '', text)
-
-
-def unescape(text):
-    txt = re.sub(r'\s+', ' ', text)
-    return html.unescape(txt)
-
-
-def useragent(txt):
-    return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
 
 
 "commands"

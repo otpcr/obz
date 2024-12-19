@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0012,W0105,W0201,W0613,w0622,W0718,E1102,E0402
+# pylint: disable=C,R,W0105,W0611,W0622,W0718,E1102
 
 
 "internet relay chat"
@@ -17,7 +17,7 @@ import _thread
 
 
 from ..client  import Event
-from ..command import Commands, parse
+from ..command import Commands, command, parse
 from ..object  import Object, edit, format, keys
 from ..persist import Cache, ident, last, write
 from ..persist import Config as Main
@@ -497,20 +497,6 @@ class IRC(Reactor, Output):
 
     def wait(self):
         self.events.ready.wait()
-
-
-def command(bot, evt):
-    parse(evt, evt.txt)
-    if "ident" in dir(bot):
-        evt.orig = bot.ident
-    func = Commands.cmds.get(evt.cmd, None)
-    if func:
-        try:
-            func(evt)
-            bot.display(evt)
-        except Exception as ex:
-            later(ex)
-    evt.ready()
 
 
 def cb_auth(bot, evt):

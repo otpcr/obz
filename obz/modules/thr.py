@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0105,E0402
+# pylint: disable=C
 
 
 "running threads."

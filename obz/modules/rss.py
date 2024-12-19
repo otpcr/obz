@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0622,E0402
+# pylint: disable=C,R0903,W0105,W0622
 
 
 "rich site syndicate"
