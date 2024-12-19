@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0622
+# pylint: disable=C,R,W0622
 
 
 "a clean namespace"
@@ -81,8 +81,7 @@ def fqn(obj):
 def items(obj):
     if isinstance(obj,type({})):
         return obj.items()
-    else:
-        return obj.__dict__.items()
+    return obj.__dict__.items()
 
 
 def keys(obj):

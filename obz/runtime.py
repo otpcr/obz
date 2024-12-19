@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0212,W0718
+# pylint: disable=C,R0903,R1710,W0212,W0718
 
 
 "object runtime"
