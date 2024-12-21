@@ -22,4 +22,4 @@ if os.path.exists("bin/clean"):
     popen("bin/clean")
 
 
-popen(f"pylint {NAME} bin/tinder tests")
+popen(f"pylint {NAME}/*.py {NAME}/modules/*.py bin/tinder tests")

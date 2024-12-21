@@ -11,7 +11,21 @@ import sys
 from .client  import Client, Event
 from .command import Commands, command, parse, scan
 from .persist import Config
-from .runtime import errors, wrap
+from .runtime import errors, plain
+
+
+TXT = """[Unit]
+Description=%s
+After=network-online.target
+
+[Service]
+Type=simple
+User=%s
+Group=%s
+ExecStart=/home/%s/.local/bin/%ss
+
+[Install]
+WantedBy=multi-user.target"""
 
 
 Cfg = Config()
@@ -24,7 +38,7 @@ class CLI(Client):
 
 
 def wrapped():
-    wrap(main)
+    plain(main)
     for line in errors():
         print(line)
 
@@ -46,20 +60,6 @@ def main():
     csl = CLI()
     command(csl, evt)
     evt.wait()
-
-
-TXT = """[Unit]
-Description=%s
-After=network-online.target
-
-[Service]
-Type=simple
-User=%s
-Group=%s
-ExecStart=/home/%s/.local/bin/%ss
-
-[Install]
-WantedBy=multi-user.target"""
 
 
 if __name__ == "__main__":

@@ -1,19 +1,18 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,,W0718
+# pylint: disable=C,W0718
 
 
 "main"
 
 
 import sys
-import termios
 import time
 
 
 from .client  import Client, Event
 from .command import parse, scan
 from .persist import Config
-from .runtime import errors, forever, later
+from .runtime import errors, forever, wrap
 
 
 cfg = Config()
@@ -41,23 +40,6 @@ class Console(Client):
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
     print(f"{cfg.name.upper()} since {tme}")
-
-
-def wrap(func):
-    old = None
-    try:
-        old = termios.tcgetattr(sys.stdin.fileno())
-    except termios.error:
-        pass
-    try:
-        func()
-    except (KeyboardInterrupt, EOFError):
-        print("")
-    except Exception as ex:
-        later(ex)
-    finally:
-        if old:
-            termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old)
 
 
 def wrapped():

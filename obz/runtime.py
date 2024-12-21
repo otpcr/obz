@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R0903,R1710,W0212,W0718
+# pylint: disable=C,R0903,R1710,W0212,W0621,W0718
 
 
 "object runtime"
@@ -19,10 +19,10 @@ class Errors:
     @staticmethod
     def format(exc):
         return traceback.format_exception(
-                                   type(exc),
-                                   exc,
-                                   exc.__traceback__
-                                  )
+            type(exc),
+            exc,
+            exc.__traceback__
+        )
 
 
 class Reactor:
@@ -143,6 +143,28 @@ class Repeater(Timer):
         super().run()
 
 
+def daemon(verbose=False):
+    import os
+    import sys
+    pid = os.fork()
+    if pid != 0:
+        os._exit(0)
+    os.setsid()
+    pid2 = os.fork()
+    if pid2 != 0:
+        os._exit(0)
+    if not verbose:
+        with open('/dev/null', 'r', encoding="utf-8") as sis:
+            os.dup2(sis.fileno(), sys.stdin.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as sos:
+            os.dup2(sos.fileno(), sys.stdout.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as ses:
+            os.dup2(ses.fileno(), sys.stderr.fileno())
+    os.umask(0)
+    os.chdir("/")
+    os.nice(10)
+
+
 def errors():
     for err in Errors.errors:
         for line in err:
@@ -185,7 +207,7 @@ def name(obj):
     return None
 
 
-def wrap(func):
+def plain(func):
     try:
         func()
     except (KeyboardInterrupt, EOFError):
@@ -194,17 +216,49 @@ def wrap(func):
         later(ex)
 
 
+def privileges():
+    import getpass
+    import os
+    import pwd
+    pwnam2 = pwd.getpwnam(getpass.getuser())
+    os.setgid(pwnam2.pw_gid)
+    os.setuid(pwnam2.pw_uid)
+
+
+def wrap(func):
+    import sys
+    import termios
+    old = None
+    try:
+        old = termios.tcgetattr(sys.stdin.fileno())
+    except termios.error:
+        pass
+    try:
+        func()
+    except (KeyboardInterrupt, EOFError):
+        print("")
+    except Exception as ex:
+        later(ex)
+    finally:
+        if old:
+            termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old)
+
+
+
 def __dir__():
     return (
         'Errors',
         'Reactor',
         'Repeater',
         'Thread',
-        'Timer'
+        'Timer',
+        'daemon',
         'errors',
         'forever',
         'later',
         'launch',
         'name',
+        'plain',
+        'privileges',
         'wrap'
     )

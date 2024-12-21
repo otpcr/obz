@@ -37,6 +37,9 @@ class Config(Obj):
     wdr  = os.path.expanduser("~/.{Config.name}")
 
 
+"path"
+
+
 def long(name):
     split = name.split(".")[-1].lower()
     res = name
@@ -60,6 +63,9 @@ def store(pth=""):
     if not os.path.exists(stor):
         skel()
     return p(Config.wdr, "store", pth)
+
+
+"caching"
 
 
 class Cache:
@@ -269,6 +275,7 @@ def sync(obj, pth):
         txt = dumps(obj, indent=4)
         with open(pth, 'w', encoding='utf-8') as ofile:
             ofile.write(txt)
+
 
 "interface"
 

@@ -89,7 +89,6 @@ class Event(Default):
             self._thr.join()
 
 
-
 def __dir__():
     return (
         'Client',
