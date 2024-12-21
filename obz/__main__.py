@@ -4,8 +4,8 @@
 "main"
 
 
-from .control import wrapped
+from .main import main
 
 
 if __name__ == "__main__":
-    wrapped()
+    main()
