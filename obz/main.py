@@ -61,6 +61,8 @@ def background():
 def check(txt):
     args = sys.argv[1:]
     for arg in args:
+       if not arg.startswith("-"):
+           continue
        for c in txt:
            if c in arg:
                return True
