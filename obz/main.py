@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0718
+# pylint: disable=C,W0212,W0611,W0718
 
 
 "main"
@@ -13,7 +13,7 @@ import time
 from .client  import Client, Event
 from .command import Commands, command, parse, scan
 from .persist import Config, pidfile, pidname
-from .runtime import errors, forever
+from .runtime import errors, forever, later
 
 
 cfg = Config()
@@ -61,11 +61,11 @@ def background():
 def check(txt):
     args = sys.argv[1:]
     for arg in args:
-       if not arg.startswith("-"):
-           continue
-       for c in txt:
-           if c in arg:
-               return True
+        if not arg.startswith("-"):
+            continue
+        for c in txt:
+            if c in arg:
+                return True
     return False
 
 
@@ -87,7 +87,8 @@ def console():
 
 def control():
     parse(cfg, " ".join(sys.argv[1:]))
-    from .modules import face
+    from .modules import face, srv
+    Commands.scan(srv)
     scan(face)
     evt = Event()
     evt.type = "command"
@@ -134,7 +135,6 @@ def service():
 
 
 def wrap(func):
-    import sys
     import termios
     old = None
     try:
@@ -145,8 +145,8 @@ def wrap(func):
         func()
     except (KeyboardInterrupt, EOFError):
         pass
-    except Exception as ex:
-        later(ex)
+    except Exception as exc:
+        later(exc)
     finally:
         if old:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old)

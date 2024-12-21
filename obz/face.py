@@ -5,10 +5,7 @@
 "interface"
 
 
-from . import client, command, console, control, daemon
-from . import object, persist, runtime, service
-
-
+from .       import client, command, main, object, persist, runtime
 from .object import *
 
 
@@ -16,10 +13,8 @@ def __dir__():
     return (
         'client',
         'command',
-        'console',
-        'daemon',
+        'main',
         'object',
         'persist',
-        'runtime',
-        'service'
+        'runtime'
     )

@@ -1,11 +1,12 @@
 # This file is placed in the Public Domain.
-# pylint : disable=C
+# pylint: disable=C
 
 
 "service file"
 
 
-from ..main import cfg
+from ..persist import Config
+
 
 TXT = """[Unit]
 Description=%s
@@ -25,4 +26,4 @@ WantedBy=multi-user.target"""
 def srv(event):
     import getpass
     name = getpass.getuser()
-    event.reply(TXT % (cfg.name.upper(), name, name, name, cfg.name))
+    event.reply(TXT % (Config.name.upper(), name, name, name, Config.name))
