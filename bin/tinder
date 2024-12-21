@@ -137,7 +137,6 @@ def main():
     for thr in thrs:
         thr.join()
     consume(events)
-    time.sleep(0.1)
     clt.wait()
     clt.stop()
     endtime = time.time()
