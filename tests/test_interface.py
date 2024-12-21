@@ -17,8 +17,7 @@ import obz
 from obz.object import *
 
 
-import obz.control
-import obz.daemon
+import obz.main
 import obz.modules
 import obz.object
 import obz.persist
@@ -26,8 +25,7 @@ import obz.runtime
 
 
 PACKAGE = [
-    'control',
-    'daemon',
+    'main',
     'modules',
     'object',
     'persist',
