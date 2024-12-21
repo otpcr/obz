@@ -158,7 +158,7 @@ def main():
     if check("c"):
         wrap(console)
     elif check("d"):
-        daemon()
+        background()
     elif check("s"):
         wrap(service)
     else:
