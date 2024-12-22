@@ -148,13 +148,6 @@ def errors():
         for line in err:
             yield line
 
-def forever():
-    while True:
-        try:
-            time.sleep(0.1)
-        except (KeyboardInterrupt, EOFError):
-            _thread.interrupt_main()
-
 
 def later(exc):
     excp = exc.with_traceback(exc.__traceback__)
@@ -185,15 +178,6 @@ def name(obj):
     return None
 
 
-def wrap(func):
-    try:
-        func()
-    except (KeyboardInterrupt, EOFError):
-        pass
-    except Exception as ex:
-        later(ex)
-
-
 def __dir__():
     return (
         'Errors',
@@ -201,13 +185,8 @@ def __dir__():
         'Repeater',
         'Thread',
         'Timer',
-        'daemon',
         'errors',
-        'forever',
         'later',
         'launch',
-        'name',
-        'plain',
-        'privileges',
-        'wrap'
+        'name'
     )

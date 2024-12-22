@@ -118,6 +118,14 @@ def daemon(verbose=False):
     os.nice(10)
 
 
+def forever():
+    while True:
+        try:
+            time.sleep(0.1)
+        except (KeyboardInterrupt, EOFError):
+            _thread.interrupt_main()
+
+
 def privileges():
     import getpass
     import pwd
