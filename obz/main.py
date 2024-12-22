@@ -8,12 +8,13 @@
 import os
 import sys
 import time
+import _thread
 
 
 from .client  import Client, Event
 from .command import Commands, command, parse, scan
 from .persist import Config, pidfile, pidname
-from .runtime import errors, forever, later
+from .runtime import errors, later
 
 
 cfg = Config()
