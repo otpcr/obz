@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "obz"
-description = "write your own commands"
+description = "object shell"
 version = "7"
 authors = [
     {name = "Bart Thate",email = "bthate@dds.nl"},
@@ -24,13 +24,6 @@ classifiers = [
 ]
 
 
-[project.scripts]
-'obz'  = 'obz.main:control'
-'obzc' = 'obz.main:console'
-'obzd' = 'obz.main:background'
-'obzs' = 'obz.main:service'
-
-
 [project.urls]
 "home" = "https://pypi.org/project/obz"
 "bugs" = "https://github.com/otpcr/obz/issues"
@@ -38,6 +31,9 @@ classifiers = [
 
 
 [tool.setuptools]
+script-files = [
+    "bin/obz",
+]
 packages = [
     "obz",
     "obz.modules"

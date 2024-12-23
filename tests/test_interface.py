@@ -17,7 +17,6 @@ import obz
 from obz.object import *
 
 
-import obz.main
 import obz.modules
 import obz.object
 import obz.persist
@@ -25,7 +24,6 @@ import obz.runtime
 
 
 PACKAGE = [
-    'main',
     'modules',
     'object',
     'persist',
