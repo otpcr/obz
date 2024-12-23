@@ -21,6 +21,22 @@ from obz.persist import Config, pidfile, pidname
 from obz.runtime import errors, later
 
 
+TXT = """[Unit]
+Description=%s
+After=network-online.target
+
+[Service]
+Type=simple
+User=%s
+Group=%s
+ExecStart=/home/%s/.local/bin/%s -s
+
+[Install]
+WantedBy=multi-user.target"""
+
+
+
+
 cfg = Config()
 
 
@@ -91,9 +107,9 @@ def console():
 
 
 def control():
+    Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
-    from obz.modules import face, srv
-    Commands.scan(srv)
+    from obz.modules import face
     scan(face)
     evt = Event()
     evt.type = "command"
@@ -145,6 +161,12 @@ def service():
     from obz.modules import face as mods
     scan(mods, init=True)
     forever()
+
+
+def srv(event):
+    import getpass
+    name = getpass.getuser()
+    event.reply(TXT % (Config.name.upper(), name, name, name, Config.name))
 
 
 def wrap(func):
