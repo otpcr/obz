@@ -17,17 +17,19 @@ import obz
 from obz.object import *
 
 
-import obz.modules
+import obz.mods
 import obz.object
 import obz.persist
-import obz.runtime
+import obz.run
 
 
 PACKAGE = [
-    'modules',
+    'client',
+    'command',
+    'mods',
     'object',
     'persist',
-    'runtime'
+    'run'
 ]
 
 

@@ -17,9 +17,9 @@ sys.path.insert(0, os.getcwd())
 
 from obz.client  import Client, Event
 from obz.command import Commands, command, scan
-from obz.persist import Config
-from obz.runtime import errors, later
-from obz.utils   import parse, pidfile, pidname
+from obz.persist import Config, pidname
+from obz.run     import errors, later
+from obz.utils   import parse, pidfile
 
 
 TXT = """[Unit]

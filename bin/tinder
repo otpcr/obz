@@ -23,7 +23,7 @@ from obz.mods    import face
 from obz.object  import Object
 from obz.persist import Config, skel
 from obz.run     import errors, later, launch
-from obz.utils   import *
+from obz.utils   import laps, parse
 
 
 cfg = Config()

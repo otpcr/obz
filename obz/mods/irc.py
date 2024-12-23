@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0611,W0622,W0718,E1102
+# pylint: disable=C,R,W0105,W0611,W0401,W0622,W0718,E1102
 
 
 "internet relay chat"
@@ -22,7 +22,8 @@ from ..object  import Object, edit, format, keys
 from ..persist import Cache, ident, last, write
 from ..persist import Config as Main
 from ..run     import Reactor, later, launch
-from ..utils   import *
+from ..utils   import spl
+
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
 
@@ -384,9 +385,9 @@ class IRC(Reactor, Output):
             obj.txt = rawstr.split(':', 2)[-1]
         if not obj.txt and len(arguments) == 1:
             obj.txt = arguments[1]
-        spl = obj.txt.split()
-        if len(spl) > 1:
-            obj.args = spl[1:]
+        splitted = obj.txt.split()
+        if len(splitted) > 1:
+            obj.args = splitted[1:]
         if obj.args:
             obj.rest = " ".join(obj.args)
         obj.orig = object.__repr__(self)
