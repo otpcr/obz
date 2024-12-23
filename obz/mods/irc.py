@@ -17,12 +17,12 @@ import _thread
 
 
 from ..client  import Event
-from ..command import Commands, command, parse
+from ..command import Commands, command
 from ..object  import Object, edit, format, keys
 from ..persist import Cache, ident, last, write
 from ..persist import Config as Main
-from ..runtime import Reactor, later, launch
-
+from ..run     import Reactor, later, launch
+from ..utils   import *
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
 

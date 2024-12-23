@@ -9,7 +9,8 @@ import time
 
 
 from ..object  import Object
-from ..persist import find, fntime, ident, laps, write
+from ..persist import find, ident, write
+from ..utils   import fntime, laps
 
 
 class Log(Object):

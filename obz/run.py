@@ -12,6 +12,9 @@ import traceback
 import _thread
 
 
+from .utils import name
+
+
 class Errors:
 
     errors = []
@@ -28,9 +31,9 @@ class Errors:
 class Reactor:
 
     def __init__(self):
-        self.cbs      = {}
-        self.queue    = queue.Queue()
-        self.stopped  = threading.Event()
+        self.cbs = {}
+        self.queue = queue.Queue()
+        self.stopped = threading.Event()
 
     def callback(self, evt):
         func = self.cbs.get(evt.type, None)
@@ -73,9 +76,9 @@ class Thread(threading.Thread):
 
     def __init__(self, func, thrname, *args, daemon=True, **kwargs):
         super().__init__(None, self.run, thrname, (), {}, daemon=daemon)
-        self.name      = thrname or name(func)
-        self.queue     = queue.Queue()
-        self.result    = None
+        self.name = thrname or name(func)
+        self.queue = queue.Queue()
+        self.result = None
         self.starttime = time.time()
         self.queue.put_nowait((func, args))
 
@@ -143,6 +146,9 @@ class Repeater(Timer):
         super().run()
 
 
+"utilities"
+
+
 def errors():
     for err in Errors.errors:
         for line in err:
@@ -163,19 +169,7 @@ def launch(func, *args, **kwargs):
     return thread
 
 
-def name(obj):
-    typ = type(obj)
-    if '__builtins__' in dir(typ):
-        return obj.__name__
-    if '__self__' in dir(obj):
-        return f'{obj.__self__.__class__.__name__}.{obj.__name__}'
-    if '__class__' in dir(obj) and '__name__' in dir(obj):
-        return f'{obj.__class__.__name__}.{obj.__name__}'
-    if '__class__' in dir(obj):
-        return f"{obj.__class__.__module__}.{obj.__class__.__name__}"
-    if '__name__' in dir(obj):
-        return f'{obj.__class__.__name__}.{obj.__name__}'
-    return None
+"interface"
 
 
 def __dir__():
@@ -187,6 +181,5 @@ def __dir__():
         'Timer',
         'errors',
         'later',
-        'launch',
-        'name'
+        'launch'
     )

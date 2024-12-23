@@ -14,6 +14,13 @@ class Object:
         return str(self.__dict__)
 
 
+class Obj(Object):
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+
+
 def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
@@ -77,6 +84,7 @@ def fqn(obj):
     if kin == "type":
         kin = f"{obj.__module__}.{obj.__name__}"
     return kin
+
 
 def items(obj):
     if isinstance(obj,type({})):

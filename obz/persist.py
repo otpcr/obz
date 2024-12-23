@@ -14,7 +14,8 @@ import uuid
 import _thread
 
 
-from .object import Object, dumps, loads, search, update
+from .object  import Object, Obj, dumps, fqn, loads, search, update
+from .utils   import cdir, fntime, strip
 
 
 cachelock = _thread.allocate_lock()
@@ -24,17 +25,34 @@ lock      = _thread.allocate_lock()
 p         = os.path.join
 
 
-class Obj(Object):
-
-    def __getattr__(self, key):
-        return self.__dict__.get(key, "")
-
-
 class Config(Obj):
 
     fqns = []
     name = "obz"
     wdr  = os.path.expanduser("~/.{Config.name}")
+
+
+class Cache:
+
+    objs = {}
+
+    @staticmethod
+    def add(path, obj):
+        with cachelock:
+            Cache.objs[path] = obj
+
+    @staticmethod
+    def get(path):
+        with cachelock:
+            return Cache.objs.get(path)
+
+    @staticmethod
+    def typed(match):
+        with cachelock:
+            for key in Cache.objs:
+                if match not in key:
+                    continue
+                yield Cache.objs.get(key)
 
 
 "path"
@@ -65,38 +83,7 @@ def store(pth=""):
     return p(Config.wdr, "store", pth)
 
 
-"caching"
-
-
-class Cache:
-
-    objs = {}
-
-    @staticmethod
-    def add(path, obj):
-        with cachelock:
-            Cache.objs[path] = obj
-
-    @staticmethod
-    def get(path):
-        with cachelock:
-            return Cache.objs.get(path)
-
-    @staticmethod
-    def typed(match):
-        with cachelock:
-            for key in Cache.objs:
-                if match not in key:
-                    continue
-                yield Cache.objs.get(key)
-
-
 "utilities"
-
-
-def cdir(pth):
-    path = pathlib.Path(pth)
-    path.parent.mkdir(parents=True, exist_ok=True)
 
 
 def find(mtc, selector=None, index=None, deleted=False, matching=False):
@@ -134,80 +121,11 @@ def fns(mtc=""):
                             yield strip(p(ddd, fll))
 
 
-def fntime(daystr):
-    daystr = daystr.replace('_', ':')
-    datestr = ' '.join(daystr.split(os.sep)[-2:])
-    if '.' in datestr:
-        datestr, rest = datestr.rsplit('.', 1)
-    else:
-        rest = ''
-    timed = time.mktime(time.strptime(datestr, '%Y-%m-%d %H:%M:%S'))
-    if rest:
-        timed += float('.' + rest)
-    return timed
-
-
-def laps(seconds, short=True):
-    txt = ""
-    nsec = float(seconds)
-    if nsec < 1:
-        return f"{nsec:.2f}s"
-    yea = 365*24*60*60
-    week = 7*24*60*60
-    nday = 24*60*60
-    hour = 60*60
-    minute = 60
-    yeas = int(nsec/yea)
-    nsec -= yeas*yea
-    weeks = int(nsec/week)
-    nsec -= weeks*week
-    nrdays = int(nsec/nday)
-    nsec -= nrdays*nday
-    hours = int(nsec/hour)
-    nsec -= hours*hour
-    minutes = int(nsec/minute)
-    nsec -= int(minute*minutes)
-    sec = int(nsec)
-    if yeas:
-        txt += f"{yeas}y"
-    if weeks:
-        nrdays += weeks * 7
-    if nrdays:
-        txt += f"{nrdays}d"
-    if short and txt:
-        return txt.strip()
-    if hours:
-        txt += f"{hours}h"
-    if minutes:
-        txt += f"{minutes}m"
-    if sec:
-        txt += f"{sec}s"
-    txt = txt.strip()
-    return txt
-
-
-def pidfile(filename):
-    if os.path.exists(filename):
-        os.unlink(filename)
-    path2 = pathlib.Path(filename)
-    path2.parent.mkdir(parents=True, exist_ok=True)
-    with open(filename, "w", encoding="utf-8") as fds:
-        fds.write(str(os.getpid()))
-
-
 def skel():
     stor = p(Config.wdr, "store", "")
     path = pathlib.Path(stor)
     path.mkdir(parents=True, exist_ok=True)
     return path
-
-
-def shortid():
-    return str(uuid.uuid4())[:8]
-
-
-def strip(pth, nmr=3):
-    return os.sep.join(pth.split(os.sep)[-nmr:])
 
 
 def types():
@@ -222,13 +140,6 @@ def read(obj, pth):
         pth2 = store(pth)
         fetch(obj, pth2)
         return os.sep.join(pth.split(os.sep)[-3:])
-
-
-def fqn(obj):
-    kin = str(type(obj)).split()[-1][1:-2]
-    if kin == "type":
-        kin = f"{obj.__module__}.{obj.__name__}"
-    return kin
 
 
 def ident(obj):

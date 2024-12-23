@@ -16,9 +16,10 @@ sys.path.insert(0, os.getcwd())
 
 
 from obz.client  import Client, Event
-from obz.command import Commands, command, parse, scan
-from obz.persist import Config, pidfile, pidname
+from obz.command import Commands, command, scan
+from obz.persist import Config
 from obz.runtime import errors, later
+from obz.utils   import parse, pidfile, pidname
 
 
 TXT = """[Unit]
@@ -33,8 +34,6 @@ ExecStart=/home/%s/.local/bin/%s -s
 
 [Install]
 WantedBy=multi-user.target"""
-
-
 
 
 cfg = Config()
@@ -74,7 +73,7 @@ def background():
     daemon(True)
     privileges()
     pidfile(pidname(Config.name))
-    from obz.modules import face
+    from obz.mods import face
     scan(face, init=True)
     forever()
 
@@ -95,7 +94,7 @@ def console():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    from obz.modules import face
+    from obz.mods import face
     for mod, thr in scan(face, init="i" in cfg.opts, disable=cfg.sets.dis):
         if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
@@ -109,7 +108,7 @@ def console():
 def control():
     Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
-    from obz.modules import face
+    from obz.mods import face
     scan(face)
     evt = Event()
     evt.type = "command"
@@ -158,7 +157,7 @@ def privileges():
 def service():
     privileges()
     pidfile(pidname(Config.name))
-    from obz.modules import face as mods
+    from obz.mods import face as mods
     scan(mods, init=True)
     forever()
 
@@ -185,6 +184,8 @@ def wrap(func):
     finally:
         if old:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old)
+    for line in errors():
+        print(line)
 
 
 def wrapped():
@@ -203,4 +204,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    wrapped()
