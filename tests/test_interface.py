@@ -19,19 +19,19 @@ from obz.object import *
 
 import obz.client
 import obz.command
-import obz.mods
+import obz.modules
 import obz.object
 import obz.persist
-import obz.run
+import obz.runtime
 
 
 PACKAGE = [
     'client',
     'command',
-    'mods',
+    'modules',
     'object',
     'persist',
-    'run'
+    'runtime'
 ]
 
 

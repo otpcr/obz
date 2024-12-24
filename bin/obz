@@ -15,11 +15,9 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.client  import Client, Event
-from obz.command import Commands, command, scan
-from obz.persist import Config, pidname
-from obz.run     import errors, later
-from obz.utils   import parse, pidfile
+from obz.client  import Client, Event, command, parse
+from obz.persist import Config, pidfile, pidname
+from obz.runtime import Commands, errors, later, scan
 
 
 TXT = """[Unit]
@@ -73,7 +71,7 @@ def background():
     daemon(True)
     privileges()
     pidfile(pidname(Config.name))
-    from obz.mods import face
+    from obz.modules import face
     scan(face, init=True)
     forever()
 
@@ -94,7 +92,7 @@ def console():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    from obz.mods import face
+    from obz.modules import face
     for mod, thr in scan(face, init="i" in cfg.opts, disable=cfg.sets.dis):
         if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
@@ -108,7 +106,7 @@ def console():
 def control():
     Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
-    from obz.mods import face
+    from obz.modules import face
     scan(face)
     evt = Event()
     evt.type = "command"
@@ -157,7 +155,7 @@ def privileges():
 def service():
     privileges()
     pidfile(pidname(Config.name))
-    from obz.mods import face as mods
+    from obz.modules import face as mods
     scan(mods, init=True)
     forever()
 
@@ -178,7 +176,7 @@ def wrap(func):
     try:
         func()
     except (KeyboardInterrupt, EOFError):
-        pass
+        print("")
     except Exception as exc:
         later(exc)
     finally:

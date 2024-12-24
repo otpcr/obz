@@ -11,7 +11,6 @@ import re
 import time
 import urllib
 import urllib.request
-import uuid
 import _thread
 
 
@@ -20,9 +19,8 @@ from urllib.parse import quote_plus, urlencode
 
 
 from ..object  import Object, format, update
-from ..persist import Cache, find, last, ident, write
-from ..run     import Repeater, launch
-from ..utils   import fntime, laps, spl
+from ..persist import Cache, find, fntime, laps, last, ident, write
+from ..runtime import Repeater, launch, spl
 
 
 DEBUG = False
@@ -240,10 +238,6 @@ def geturl(url):
     with urllib.request.urlopen(req) as response: # nosec
         response.data = response.read()
         return response
-
-
-def shortid():
-    return str(uuid.uuid4())[:8]
 
 
 def striphtml(text):

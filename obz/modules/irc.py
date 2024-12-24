@@ -16,13 +16,11 @@ import time
 import _thread
 
 
-from ..client  import Event
-from ..command import Commands, command
+from ..client  import command
 from ..object  import Object, edit, format, keys
 from ..persist import Cache, ident, last, write
 from ..persist import Config as Main
-from ..run     import Reactor, later, launch
-from ..utils   import spl
+from ..runtime import Commands, Reactor, later, launch, spl
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]

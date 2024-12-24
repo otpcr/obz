@@ -9,8 +9,7 @@ import time
 
 
 from ..object  import format
-from ..persist import find, long, skel, types
-from ..utils   import fntime, laps
+from ..persist import find, fntime, laps, long, skel, types
 
 
 def fnd(event):

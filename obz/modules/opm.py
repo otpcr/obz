@@ -12,7 +12,7 @@ import _thread
 
 from ..object  import Object, update
 from ..persist import find, ident, write
-from ..utils   import spl
+from ..runtime import spl
 
 
 from .rss import Rss

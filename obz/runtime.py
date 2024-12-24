@@ -5,14 +5,53 @@
 "object runtime"
 
 
+import inspect
 import queue
 import threading
 import time
 import traceback
+import types
 import _thread
 
 
-from .utils import name
+class Cache:
+
+    objs = {}
+
+    @staticmethod
+    def add(path, obj):
+        with cachelock:
+            Cache.objs[path] = obj
+
+    @staticmethod
+    def get(path):
+        with cachelock:
+            return Cache.objs.get(path)
+
+    @staticmethod
+    def typed(match):
+        with cachelock:
+            for key in Cache.objs:
+                if match not in key:
+                    continue
+                yield Cache.objs.get(key)
+
+
+class Commands:
+
+    cmds = {}
+
+    @staticmethod
+    def add(func):
+        Commands.cmds[func.__name__] = func
+
+    @staticmethod
+    def scan(mod):
+        for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
+            if key.startswith("cb"):
+                continue
+            if 'event' in cmdz.__code__.co_varnames:
+                Commands.add(cmdz)
 
 
 class Errors:
@@ -146,9 +185,6 @@ class Repeater(Timer):
         super().run()
 
 
-"utilities"
-
-
 def errors():
     for err in Errors.errors:
         for line in err:
@@ -169,11 +205,56 @@ def launch(func, *args, **kwargs):
     return thread
 
 
-"interface"
+def modloop(*pkgs, disable=""):
+    for pkg in pkgs:
+        for modname in dir(pkg):
+            if modname in spl(disable):
+                continue
+            if modname.startswith("__"):
+                continue
+            yield getattr(pkg, modname)
+
+
+def name(obj):
+    typ = type(obj)
+    if '__builtins__' in dir(typ):
+        return obj.__name__
+    if '__self__' in dir(obj):
+        return f'{obj.__self__.__class__.__name__}.{obj.__name__}'
+    if '__class__' in dir(obj) and '__name__' in dir(obj):
+        return f'{obj.__class__.__name__}.{obj.__name__}'
+    if '__class__' in dir(obj):
+        return f"{obj.__class__.__module__}.{obj.__class__.__name__}"
+    if '__name__' in dir(obj):
+        return f'{obj.__class__.__name__}.{obj.__name__}'
+    return None
+
+
+def scan(*pkgs, init=False, disable=""):
+    result = []
+    for mod in modloop(*pkgs, disable=disable):
+        if type(mod) is not types.ModuleType:
+            continue
+        Commands.scan(mod)
+        thr = None
+        if init and "init" in dir(mod):
+            thr = launch(mod.init)
+        result.append((mod, thr))
+    return result
+
+
+def spl(txt):
+    try:
+        result = txt.split(',')
+    except (TypeError, ValueError):
+        result = txt
+    return [x for x in result if x]
 
 
 def __dir__():
     return (
+        'Cache',
+        'Commands',
         'Errors',
         'Reactor',
         'Repeater',

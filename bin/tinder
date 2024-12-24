@@ -18,12 +18,11 @@ sys.path.insert(0, os.getcwd())
 
 
 from obz.client  import Client, Event
-from obz.command import Commands, scan
-from obz.mods    import face
+from obz.command import Commands, parse, scan
+from obz.modules import face
 from obz.object  import Object
-from obz.persist import Config, skel
-from obz.run     import errors, later, launch
-from obz.utils   import laps, parse
+from obz.persist import Config, laps, skel
+from obz.runtime import errors, later, launch
 
 
 cfg = Config()
