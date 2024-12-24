@@ -2,7 +2,7 @@
 # pylint: disable=C,R0903,R1710,W0105,W0212,W0621,W0718
 
 
-"object runtime"
+"runtime"
 
 
 import inspect
@@ -12,6 +12,9 @@ import time
 import traceback
 import types
 import _thread
+
+
+cachelock = _thread.allocate_lock()
 
 
 class Cache:

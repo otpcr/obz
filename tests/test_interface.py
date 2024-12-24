@@ -18,7 +18,6 @@ from obz.object import *
 
 
 import obz.client
-import obz.command
 import obz.modules
 import obz.object
 import obz.persist
@@ -27,7 +26,6 @@ import obz.runtime
 
 PACKAGE = [
     'client',
-    'command',
     'modules',
     'object',
     'persist',
