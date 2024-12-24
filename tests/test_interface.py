@@ -17,6 +17,8 @@ import obz
 from obz.object import *
 
 
+import obz.client
+import obz.command
 import obz.mods
 import obz.object
 import obz.persist
