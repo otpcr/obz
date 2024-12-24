@@ -9,8 +9,9 @@
 
 |
 | ``obz <cmd> [key=val] [key==val]``
-| ``obzd`` 
-| ``obzs``
+| ``obz -cviw
+| ``obz -d`` 
+| ``obz -s``
 |
 
 **DESCRIPTION**
