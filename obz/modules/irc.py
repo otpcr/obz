@@ -24,6 +24,7 @@ from ..runtime import Cache, Commands, Reactor, later, launch, spl
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
+NAME   = Object.__module__.split(".", maxsplit=2)[-2]
 
 
 output = None
@@ -48,18 +49,18 @@ def init():
 
 class Config(Object):
 
-    channel = f'#{Main.name}'
+    channel = f'#{NAME}'
     commands = True
     control = '!'
-    nick = Main.name
+    nick = NAME
     password = ""
     port = 6667
-    realname = Main.name
+    realname = NAME
     sasl = False
     server = 'localhost'
     servermodes = ''
     sleep = 60
-    username = Main.name
+    username = NAME
     users = False
 
     def __init__(self):
@@ -543,7 +544,7 @@ def cb_001(bot, evt):
 
 def cb_notice(bot, evt):
     if evt.txt.startswith('VERSION'):
-        txt = f'\001VERSION {Main.name.upper()} 140 - {bot.cfg.username}\001'
+        txt = f'\001VERSION {NAME.upper()} 140 - {bot.cfg.username}\001'
         bot.docommand('NOTICE', evt.channel, txt)
 
 

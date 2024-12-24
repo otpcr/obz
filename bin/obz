@@ -20,6 +20,9 @@ from obz.persist import Config, pidfile, pidname
 from obz.runtime import Commands, errors, later, scan
 
 
+Config.wdr = os.path.expanduser("~/.obz")
+
+
 TXT = """[Unit]
 Description=%s
 After=network-online.target
