@@ -124,6 +124,7 @@ def main():
     parse(cfg, " ".join(sys.argv[1:]))
     face.rss.DEBUG = True
     scan(face)
+    print(face.rss.DEBUG)
     nrcommands = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()
