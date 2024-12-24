@@ -8,10 +8,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "obz"
-description = "object shell"
+description = "program your own commands"
 version = "7"
 authors = [
-    {name = "Bart Thate",email = "bthate@dds.nl"},
+    {name = "OTP-CR-117/19", email = "record11719@gmail.com"},
 ]
 readme = "README.rst"
 license = {text="Public Domain"}

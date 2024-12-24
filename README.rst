@@ -197,15 +197,13 @@ source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz>`_
 |
 | ``~/.obz``
 | ``~/.local/bin/obz``
-| ``~/.local/bin/obzd``
-| ``~/.local/bin/obzs``
 | ``~/.local/pipx/venvs/obz/*``
 |
 
 **AUTHOR**
 
 |
-| Bart Thate <``bthate@dds.nl``>
+| OTP-CR-117/19 <``record11719@gmail.com``>
 |
 
 **COPYRIGHT**

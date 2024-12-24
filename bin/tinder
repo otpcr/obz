@@ -24,6 +24,10 @@ from obz.persist import Config, laps, skel
 from obz.runtime import Commands, errors, later, launch, scan
 
 
+Config.name = "tinder"
+Config.wdr = ".test"
+
+
 cfg = Config()
 cfg.index = 0
 
