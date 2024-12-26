@@ -157,6 +157,10 @@ def service():
     forever()
 
 
+def wraps():
+    wrap(service)
+
+
 def srv(event):
     import getpass
     name = getpass.getuser()

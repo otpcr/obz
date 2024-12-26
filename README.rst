@@ -203,7 +203,7 @@ source is at `https://github.com/otpcr/obz  <https://github.com/otpcr/obz>`_
 **AUTHOR**
 
 |
-| OTP-CR-117/19 <``record11719@gmail.com``>
+| ``Bart Thate`` <``bthate@dds.nl``>
 |
 
 **COPYRIGHT**

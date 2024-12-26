@@ -11,7 +11,7 @@ name = "obz"
 description = "program your own commands"
 version = "7"
 authors = [
-    {name = "OTP-CR-117/19", email = "record11719@gmail.com"},
+    {name = "Bart Thate", email = "bthate@dds.nl"},
 ]
 readme = "README.rst"
 license = {text="Public Domain"}
@@ -26,6 +26,8 @@ classifiers = [
 
 [project.scripts]
 "obz" = "obz.__main__:wrapped"
+"obzd" = "obz.__main__:background"
+"obzs" = "obz.__main__:wraps"
 
 [project.urls]
 "home" = "https://pypi.org/project/obz"
