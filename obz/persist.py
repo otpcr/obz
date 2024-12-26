@@ -14,7 +14,6 @@ import _thread
 
 
 from .object  import Object, Obj, dumps, fqn, loads, search, update
-from .runtime import Cache
 
 
 cachelock = _thread.allocate_lock()
@@ -28,6 +27,29 @@ class Config(Obj):
 
     fqns = []
     wdr  = ""
+
+
+class Cache:
+
+    objs = {}
+
+    @staticmethod
+    def add(path, obj):
+        with cachelock:
+            Cache.objs[path] = obj
+
+    @staticmethod
+    def get(path):
+        with cachelock:
+            return Cache.objs.get(path)
+
+    @staticmethod
+    def typed(match):
+        with cachelock:
+            for key in Cache.objs:
+                if match not in key:
+                    continue
+                yield Cache.objs.get(key)
 
 
 "path"

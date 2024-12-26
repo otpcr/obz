@@ -1,60 +1,15 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R0903,R1710,W0105,W0212,W0621,W0718
+# pylint: disable=C,R,W0105,W0212,W0621,W0718
 
 
 "runtime"
 
 
-import inspect
 import queue
 import threading
 import time
 import traceback
-import types
 import _thread
-
-
-cachelock = _thread.allocate_lock()
-
-
-class Cache:
-
-    objs = {}
-
-    @staticmethod
-    def add(path, obj):
-        with cachelock:
-            Cache.objs[path] = obj
-
-    @staticmethod
-    def get(path):
-        with cachelock:
-            return Cache.objs.get(path)
-
-    @staticmethod
-    def typed(match):
-        with cachelock:
-            for key in Cache.objs:
-                if match not in key:
-                    continue
-                yield Cache.objs.get(key)
-
-
-class Commands:
-
-    cmds = {}
-
-    @staticmethod
-    def add(func):
-        Commands.cmds[func.__name__] = func
-
-    @staticmethod
-    def scan(mod):
-        for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
-            if key.startswith("cb"):
-                continue
-            if 'event' in cmdz.__code__.co_varnames:
-                Commands.add(cmdz)
 
 
 class Errors:
@@ -68,6 +23,34 @@ class Errors:
             exc,
             exc.__traceback__
         )
+
+
+class Event:
+
+    def __init__(self):
+        self._ready = threading.Event()
+        self._thr   = None
+        self.result = []
+        self.type   = "event"
+        self.txt    = ""
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def ready(self):
+        self._ready.set()
+
+    def reply(self, txt):
+        self.result.append(txt)
+
+    def wait(self):
+        self._ready.wait()
+        if self._thr:
+            self._thr.join()
+
 
 
 class Reactor:
@@ -208,16 +191,6 @@ def launch(func, *args, **kwargs):
     return thread
 
 
-def modloop(*pkgs, disable=""):
-    for pkg in pkgs:
-        for modname in dir(pkg):
-            if modname in spl(disable):
-                continue
-            if modname.startswith("__"):
-                continue
-            yield getattr(pkg, modname)
-
-
 def name(obj):
     typ = type(obj)
     if '__builtins__' in dir(typ):
@@ -233,32 +206,10 @@ def name(obj):
     return None
 
 
-def scan(*pkgs, init=False, disable=""):
-    result = []
-    for mod in modloop(*pkgs, disable=disable):
-        if type(mod) is not types.ModuleType:
-            continue
-        Commands.scan(mod)
-        thr = None
-        if init and "init" in dir(mod):
-            thr = launch(mod.init)
-        result.append((mod, thr))
-    return result
-
-
-def spl(txt):
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
-
-
 def __dir__():
     return (
-        'Cache',
-        'Commands',
         'Errors',
+        'Event',
         'Reactor',
         'Repeater',
         'Thread',

@@ -11,13 +11,13 @@ import time
 import _thread
 
 
-from .client  import Client, Event, command, parse
+from .client  import Client, Commands, command, parse, scan
 from .persist import Config, pidfile, pidname
-from .runtime import Commands, errors, later, scan
+from .runtime import Event, errors, later
 
 
-Config.name = "obz"
-Config.wdr  = os.path.expanduser("~/.obz")
+Config.name = Config.__module__.split(".", maxsplit=2)[-2]
+Config.wdr  = os.path.expanduser(f"~/.{Config.name}")
 
 
 TXT = """[Unit]
@@ -43,7 +43,7 @@ class CLI(Client):
         print(txt)
 
 
-class Console(Client):
+class Console(CLI):
 
     def announce(self, txt):
         self.raw(txt)
@@ -58,9 +58,6 @@ class Console(Client):
         evt.type = "command"
         return evt
 
-    def raw(self, txt):
-        print(txt)
-
 
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
@@ -71,7 +68,7 @@ def background():
     daemon(True)
     privileges()
     pidfile(pidname(Config.name))
-    from obz.modules import face
+    from .modules import face
     scan(face, init=True)
     forever()
 
@@ -92,7 +89,7 @@ def console():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    from obz.modules import face
+    from .modules import face
     for mod, thr in scan(face, init="i" in cfg.opts, disable=cfg.sets.dis):
         if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
@@ -106,7 +103,7 @@ def console():
 def control():
     Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
-    from obz.modules import face
+    from .modules import face
     scan(face)
     evt = Event()
     evt.type = "command"
@@ -155,7 +152,7 @@ def privileges():
 def service():
     privileges()
     pidfile(pidname(Config.name))
-    from obz.modules import face as mods
+    from .modules import face as mods
     scan(mods, init=True)
     forever()
 

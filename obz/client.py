@@ -5,12 +5,30 @@
 "client"
 
 
+import inspect
 import queue
-import threading
+import types
 
 
 from .object  import Obj
-from .runtime import Commands, Reactor, later, launch
+from .runtime import Reactor, later, launch
+
+
+class Commands:
+
+    cmds = {}
+
+    @staticmethod
+    def add(func):
+        Commands.cmds[func.__name__] = func
+
+    @staticmethod
+    def scan(mod):
+        for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
+            if key.startswith("cb"):
+                continue
+            if 'event' in cmdz.__code__.co_varnames:
+                Commands.add(cmdz)
 
 
 class Output:
@@ -64,31 +82,6 @@ class Client(Output, Reactor):
         Reactor.start(self)
 
 
-class Event(Obj):
-
-    def __init__(self):
-        Obj.__init__(self)
-        self._ready = threading.Event()
-        self._thr   = None
-        self.result = []
-        self.type   = "event"
-        self.txt    = ""
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    def ready(self):
-        self._ready.set()
-
-    def reply(self, txt):
-        self.result.append(txt)
-
-    def wait(self):
-        self._ready.wait()
-        if self._thr:
-            self._thr.join()
-
-
 def command(bot, evt):
     parse(evt, evt.txt)
     if "ident" in dir(bot):
@@ -101,6 +94,17 @@ def command(bot, evt):
         except Exception as ex:
             later(ex)
     evt.ready()
+
+
+def modloop(*pkgs, disable=""):
+    for pkg in pkgs:
+        for modname in dir(pkg):
+            if modname in spl(disable):
+                continue
+            if modname.startswith("__"):
+                continue
+            yield getattr(pkg, modname)
+
 
 
 def parse(obj, txt=None) -> None:
@@ -159,11 +163,33 @@ def parse(obj, txt=None) -> None:
     return obj
 
 
+def scan(*pkgs, init=False, disable=""):
+    result = []
+    for mod in modloop(*pkgs, disable=disable):
+        if type(mod) is not types.ModuleType:
+            continue
+        Commands.scan(mod)
+        thr = None
+        if init and "init" in dir(mod):
+            thr = launch(mod.init)
+        result.append((mod, thr))
+    return result
+
+
+def spl(txt):
+    try:
+        result = txt.split(',')
+    except (TypeError, ValueError):
+        result = txt
+    return [x for x in result if x]
+
+
+
 def __dir__():
     return (
         'Client',
-        'Event',
         'Output',
         'command',
-        'parse'
+        'parse',
+        'scan'
     )
