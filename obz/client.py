@@ -188,6 +188,7 @@ def spl(txt):
 def __dir__():
     return (
         'Client',
+        'Commands',
         'Output',
         'command',
         'parse',

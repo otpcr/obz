@@ -94,6 +94,9 @@ class OPMLParser:
         return result
 
 
+"utilities"
+
+
 def attrs(obj, txt):
     update(obj, OPMLParser.parse(txt))
 

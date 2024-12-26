@@ -24,7 +24,7 @@ from ..runtime import Event, Reactor, later, launch
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
-NAME   = Object.__module__.split(".", maxsplit=2)[-2]
+NAME   = Object.__module__.rsplit(".", maxsplit=2)[-2]
 
 
 output = None
