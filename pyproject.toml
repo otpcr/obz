@@ -29,6 +29,7 @@ classifiers = [
 "obzd" = "obz.__main__:background"
 "obzs" = "obz.__main__:wraps"
 
+
 [project.urls]
 "home" = "https://pypi.org/project/obz"
 "bugs" = "https://github.com/otpcr/obz/issues"
