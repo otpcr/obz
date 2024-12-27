@@ -52,7 +52,6 @@ class Event:
             self._thr.join()
 
 
-
 class Reactor:
 
     def __init__(self):
@@ -216,5 +215,6 @@ def __dir__():
         'Timer',
         'errors',
         'later',
-        'launch'
+        'launch',
+        'name',
     )

@@ -8,7 +8,8 @@
 import unittest
 
 
-from obz.object import Object, dumps, loads
+from obz.object import Object
+from obz.json   import dumps, loads
 
 
 VALIDJSON = "{'test': 'bla'}"

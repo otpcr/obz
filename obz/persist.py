@@ -13,7 +13,8 @@ import time
 import _thread
 
 
-from .object  import Object, Obj, dumps, fqn, loads, search, update
+from .object import Object, fqn, search, update
+from .json   import dumps, loads
 
 
 cachelock = _thread.allocate_lock()
@@ -23,7 +24,7 @@ lock      = _thread.allocate_lock()
 p         = os.path.join
 
 
-class Config(Obj):
+class Config:
 
     fqns = []
     wdr  = ""

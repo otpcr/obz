@@ -10,7 +10,6 @@ import queue
 import types
 
 
-from .object  import Obj
 from .runtime import Reactor, later, launch
 
 
@@ -29,6 +28,24 @@ class Commands:
                 continue
             if 'event' in cmdz.__code__.co_varnames:
                 Commands.add(cmdz)
+
+
+class Default:
+
+    def __contains__(self, key):
+        return key in dir(self)
+
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
+    def __iter__(self):
+        return iter(self.__dict__)
+
+    def __len__(self):
+        return len(self.__dict__)
+
+    def __str__(self):
+        return str(self.__dict__)
 
 
 class Output:
@@ -113,13 +130,13 @@ def parse(obj, txt=None) -> None:
     args = []
     obj.args    = []
     obj.cmd     = ""
-    obj.gets    = Obj()
+    obj.gets    = Default()
     obj.hasmods = False
     obj.index   = None
     obj.mod     = ""
     obj.opts    = ""
     obj.result  = []
-    obj.sets    = Obj()
+    obj.sets    = Default()
     obj.txt     = txt or ""
     obj.otxt    = obj.txt
     _nr = -1
@@ -189,6 +206,7 @@ def __dir__():
     return (
         'Client',
         'Commands',
+        'Default',
         'Output',
         'command',
         'parse',
