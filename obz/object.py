@@ -7,7 +7,7 @@
 
 class Object:
 
-     pass
+    pass
 
 
 def construct(obj, *args, **kwargs):

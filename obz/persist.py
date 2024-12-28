@@ -29,6 +29,9 @@ class Config:
     fqns = []
     wdr  = ""
 
+    def __getattr__(self, key):
+        return self.__dict__.get(key, "")
+
 
 class Cache:
 
