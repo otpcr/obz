@@ -40,6 +40,11 @@ def hook(data):
     return obj
 
 
+def typed(obj, string, *args, **kw):
+    data = loads(string, *args, **kw)
+    update(obj, data)
+    
+
 def update(obj, data):
     if isinstance(data, type({})):
         obj.__dict__.update(data)
