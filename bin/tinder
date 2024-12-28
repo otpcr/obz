@@ -146,7 +146,7 @@ def main():
     lap = laps(endtime-STARTTIME)
     percall = (endtime-STARTTIME)/(nrs*nrcommands)
     print(f"{lap} {nrs} {nrcommands} {percall}")
-    if not errors():
+    if not list(errors()):
         print("no errors")
 
 

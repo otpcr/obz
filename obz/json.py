@@ -20,7 +20,7 @@ class Decoder(jsn.JSONDecoder):
 
     def decode(self, s, _w=None):
         val = jsn.JSONDecoder.decode(self, s)
-        if not val:
+        if val is None:
             val = {}
         return val
 
