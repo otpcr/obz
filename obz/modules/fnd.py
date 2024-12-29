@@ -8,7 +8,7 @@
 import time
 
 
-from ..object  import format
+from ..method  import format
 from ..persist import find, fntime, laps, long, skel, types
 
 

@@ -8,7 +8,7 @@
 import unittest
 
 
-from obz.json import dumps, loads, typed
+from obz.object import dumps, loads
 
 
 class A:
@@ -42,8 +42,3 @@ class TestTypes(unittest.TestCase):
         a = False
         res = loads(dumps(a))
         self.assertEqual(res, False)
-
-    def test_object(self):
-        a = A()
-        typed(a, dumps(a))
-        self.assertEqual(type(a), A)

@@ -6,7 +6,7 @@
 
 
 from ..client import Commands
-from ..object import keys
+from ..method import keys
 
 
 def cmd(event):

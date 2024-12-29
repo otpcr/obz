@@ -216,5 +216,5 @@ def __dir__():
         'errors',
         'later',
         'launch',
-        'name',
+        'name'
     )

@@ -13,8 +13,8 @@ import time
 import _thread
 
 
-from .object import Object, fqn, search, update
-from .json   import dumps, loads
+from .object import Object, dumps, loads
+from .method import fqn, search, update
 
 
 cachelock = _thread.allocate_lock()

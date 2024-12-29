@@ -8,7 +8,8 @@
 import unittest
 
 
-from obz.object import Object, format, items, keys, update, values
+from obz.object import Object
+from obz.method import format, items, keys, update, values
 
 
 import obz
