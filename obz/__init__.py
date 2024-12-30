@@ -2,3 +2,6 @@
 
 
 "OBZ"
+
+
+from .object import *

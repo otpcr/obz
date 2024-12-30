@@ -10,7 +10,8 @@ import json
 
 class Object:
 
-    pass
+    def __str__(self):
+        return str(self.__dict__)
 
 
 class Decoder(json.JSONDecoder):
@@ -77,5 +78,6 @@ def dumps(*args, **kw):
 def __dir__():
     return (
         'Decoder',
-        'Encoder'
+        'Encoder',
+        'Object'
     )

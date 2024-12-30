@@ -107,6 +107,8 @@ def console():
 def control():
     Commands.add(srv)
     parse(cfg, " ".join(sys.argv[1:]))
+    if not cfg.otxt:
+        return
     from obz.modules import face
     scan(face)
     evt = Event()
