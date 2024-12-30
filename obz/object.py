@@ -14,6 +14,14 @@ class Object:
         return str(self.__dict__)
 
 
+def typed(obj, string, *args, **kwargs):
+    kw["cls"] = Decoder
+    kw["object_hook"] = hook
+    res = json.loads(string, *args, **kw)
+    for key, val 
+    obj.__dict__.update(res)
+
+
 class Decoder(json.JSONDecoder):
 
     def __init__(self, *args, **kwargs):
