@@ -29,18 +29,6 @@ class Decoder(json.JSONDecoder):
         return json.JSONDecoder.raw_decode(self, s, idx)
 
 
-def loads(string, *args, **kw):
-    kw["cls"] = Decoder
-    kw["object_hook"] = hook
-    return json.loads(string, *args, **kw)
-
-
-def hook(data):
-    obj = Object()
-    obj.__dict__.update(data)
-    return obj
-
-
 class Encoder(json.JSONEncoder):
 
     def __init__(self, *args, **kwargs):
@@ -73,6 +61,18 @@ class Encoder(json.JSONEncoder):
 def dumps(*args, **kw):
     kw["cls"] = Encoder
     return json.dumps(*args, **kw)
+
+
+def hook(data):
+    obj = Object()
+    obj.__dict__.update(data)
+    return obj
+
+
+def loads(string, *args, **kw):
+    kw["cls"] = Decoder
+    kw["object_hook"] = hook
+    return json.loads(string, *args, **kw)
 
 
 def __dir__():
