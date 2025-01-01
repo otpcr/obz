@@ -83,12 +83,12 @@ def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
         try:
-            update(obj, dict(val))
-        except ValueError:
+            update(obj, vars(val))
+        except TypeError:
             try:
                 update(obj, val)
             except ValueError:
-                update(obj, vars(val))
+                update(obj, dict(val))
     if kwargs:
         update(obj, kwargs)
 
