@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # This file is placed in the Public Domain.
 # pylint: disable=C,W0212,W0611,W0718
 
@@ -12,12 +11,9 @@ import time
 import _thread
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from obz.client  import Client, Commands, command, parse, scan
-from obz.persist import Config, pidfile, pidname
-from obz.runtime import Event, errors, later
+from .client  import Client, Commands, command, parse, scan
+from .persist import Config, pidfile, pidname
+from .runtime import Event, errors, later
 
 
 Config.name = Config.__module__.split(".", maxsplit=2)[-2]

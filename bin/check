@@ -9,7 +9,7 @@ import os
 import sys
 
 
-IGNORE = []
+IGNORE = ["__main__"]
 NAME = "obz"
 
 
@@ -36,7 +36,7 @@ def main():
     popen(f'grep -R importlib {NAME}')
     popen(f'grep -R "import sys" {NAME}')
     popen(f'grep -R getpass {NAME}')
-    popen(f'grep -R "import os" {NAME}')
+    #popen(f'grep -R "import os" {NAME}')
 
 
 if __name__ == "__main__":
