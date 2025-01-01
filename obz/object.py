@@ -35,27 +35,28 @@ class Encoder(json.JSONEncoder):
         json.JSONEncoder.__init__(self, *args, **kwargs)
 
     def default(self, o):
-        if isinstance(o, dict):
-            return o.items()
-        if isinstance(o, Object):
-            return vars(o)
-        if isinstance(o, list):
-            return iter(o)
-        if isinstance(o, (type(str), type(True), type(False), type(int), type(float))):
-            return o
         try:
-            return json.JSONEncoder.default(self, o)
-        except TypeError:
-            try:
-                return o.__dict__
-            except AttributeError:
-                return repr(o)
+            return o.items()
+        except AttributeError:
+            pass
+        try:
+            return vars(o)
+        except ValueError:
+            pass
+        try:
+            return iter(o)
+        except ValueError:
+            pass
+        return json.JSONEncoder.default(self, o)
 
     def encode(self, o) -> str:
         return json.JSONEncoder.encode(self, o)
 
     def iterencode(self, o, _one_shot=False):
         return json.JSONEncoder.iterencode(self, o, _one_shot)
+
+
+"json"
 
 
 def dumps(*args, **kw):
@@ -65,7 +66,7 @@ def dumps(*args, **kw):
 
 def hook(data):
     obj = Object()
-    obj.__dict__.update(data)
+    construct(obj, data)
     return obj
 
 
@@ -75,9 +76,56 @@ def loads(string, *args, **kw):
     return json.loads(string, *args, **kw)
 
 
+"methods"
+
+
+def construct(obj, *args, **kwargs):
+    if args:
+        val = args[0]
+        if isinstance(val, zip):
+            update(obj, dict(val))
+        elif isinstance(val, dict):
+            update(obj, val)
+        elif isinstance(val, Object):
+            update(obj, vars(val))
+    if kwargs:
+        update(obj, kwargs)
+
+
+def items(obj):
+    if isinstance(obj,type({})):
+        return obj.items()
+    return obj.__dict__.items()
+
+
+def keys(obj):
+    if isinstance(obj, type({})):
+        return obj.keys()
+    return list(obj.__dict__.keys())
+
+
+def update(obj, data):
+    if isinstance(data, type({})):
+        obj.__dict__.update(data)
+    else:
+        obj.__dict__.update(vars(data))
+
+
+def values(obj):
+    return obj.__dict__.values()
+
+
+"interface"
+
+
 def __dir__():
     return (
         'Decoder',
         'Encoder',
-        'Object'
+        'Object',
+        'construct',
+        'keys',
+        'items',
+        'values',
+        'update'
     )

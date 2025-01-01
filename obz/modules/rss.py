@@ -19,9 +19,8 @@ from urllib.parse import quote_plus, urlencode
 
 
 from ..client  import spl
-from ..method  import format, update
-from ..object  import Object
-from ..persist import Cache, find, fntime, laps, last, ident, write
+from ..object  import Object, update
+from ..persist import Cache, find, fntime, format, laps, last, ident, write
 from ..runtime import Repeater, launch
 
 

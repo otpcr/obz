@@ -9,8 +9,7 @@ import threading
 import time
 
 
-from ..method  import  update
-from ..object  import Object
+from ..object  import Object, update
 from ..persist import laps
 
 

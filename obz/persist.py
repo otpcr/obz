@@ -13,8 +13,7 @@ import time
 import _thread
 
 
-from .object import Object, dumps, loads
-from .method import fqn, search, update
+from .object import Object, dumps, items, keys, loads, update
 
 
 cachelock = _thread.allocate_lock()
@@ -206,11 +205,72 @@ def strip(pth, nmr=3):
 "methods"
 
 
-def read(obj, pth):
-    with disklock:
-        pth2 = store(pth)
-        fetch(obj, pth2)
-        return os.sep.join(pth.split(os.sep)[-3:])
+def edit(obj, setter, skip=False):
+    for key, val in items(setter):
+        if skip and val == "":
+            continue
+        try:
+            setattr(obj, key, int(val))
+            continue
+        except ValueError:
+            pass
+        try:
+            setattr(obj, key, float(val))
+            continue
+        except ValueError:
+            pass
+        if val in ["True", "true"]:
+            setattr(obj, key, True)
+        elif val in ["False", "false"]:
+            setattr(obj, key, False)
+        else:
+            setattr(obj, key, val)
+
+
+def fetch(obj, pth):
+    with lock:
+        with open(pth, 'r', encoding='utf-8') as ofile:
+            try:
+                obj2 = loads(ofile.read())
+                update(obj, obj2)
+            except json.decoder.JSONDecodeError as ex:
+                raise Exception(pth) from ex
+
+
+def format(obj, args=None, skip=None, plain=False):
+    if args is None:
+        args = keys(obj)
+    if skip is None:
+        skip = []
+    txt = ""
+    for key in args:
+        if key.startswith("__"):
+            continue
+        if key in skip:
+            continue
+        value = getattr(obj, key, None)
+        if value is None:
+            continue
+        if plain:
+            txt += f"{value} "
+        elif isinstance(value, str) and len(value.split()) >= 2:
+            txt += f'{key}="{value}" '
+        else:
+            txt += f'{key}={value} '
+    return txt.strip()
+
+
+def fqn(obj):
+    kin = str(type(obj)).split()[-1][1:-2]
+    if kin == "type":
+        kin = f"{obj.__module__}.{obj.__name__}"
+    return kin
+
+
+def match(obj, txt):
+    for key in keys(obj):
+        if txt in key:
+            yield key
 
 
 def ident(obj):
@@ -232,14 +292,37 @@ def last(obj, selector=None):
     return res
 
 
-def fetch(obj, pth):
+def read(obj, pth):
+    with disklock:
+        pth2 = store(pth)
+        fetch(obj, pth2)
+        return os.sep.join(pth.split(os.sep)[-3:])
+
+
+def search(obj, selector, matching=None):
+    res = False
+    if not selector:
+        return res
+    for key, value in items(selector):
+        val = getattr(obj, key, None)
+        if not val:
+            continue
+        if matching and value == val:
+            res = True
+        elif str(value).lower() in str(val).lower():
+            res = True
+        else:
+            res = False
+            break
+    return res
+
+
+def sync(obj, pth):
     with lock:
-        with open(pth, 'r', encoding='utf-8') as ofile:
-            try:
-                obj2 = loads(ofile.read())
-                update(obj, obj2)
-            except json.decoder.JSONDecodeError as ex:
-                raise Exception(pth) from ex
+        cdir(pth)
+        txt = dumps(obj, indent=4)
+        with open(pth, 'w', encoding='utf-8') as ofile:
+            ofile.write(txt)
 
 
 def write(obj, pth=None):
@@ -251,22 +334,18 @@ def write(obj, pth=None):
         return pth
 
 
-def sync(obj, pth):
-    with lock:
-        cdir(pth)
-        txt = dumps(obj, indent=4)
-        with open(pth, 'w', encoding='utf-8') as ofile:
-            ofile.write(txt)
-
-
 "interface"
 
 
 def __dir__():
     return (
         'Config',
+        'edit',
         'find',
+        'format',
         'last',
+        'match',
         'read',
+        'search',
         'write'
     )

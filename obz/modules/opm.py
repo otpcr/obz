@@ -11,8 +11,7 @@ import _thread
 
 
 from ..client  import spl
-from ..method  import update
-from ..object  import Object
+from ..object  import Object, update
 from ..persist import find, ident, write
 
 

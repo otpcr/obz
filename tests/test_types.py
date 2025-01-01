@@ -5,15 +5,25 @@
 "no tests"
 
 
+import types
 import unittest
 
 
-from obz.object import dumps, loads
+from obz.object import Object, dumps, loads
 
 
-class A:
+
+
+class A(Object):
 
     pass
+
+
+class B:
+
+    def __init__(self):
+        self.a = A()
+        self.a.a = A()
 
 
 class TestTypes(unittest.TestCase):
@@ -42,3 +52,9 @@ class TestTypes(unittest.TestCase):
         a = False
         res = loads(dumps(a))
         self.assertEqual(res, False)
+
+    def test_compsite(self):
+        b = B()
+        b.a.a.b = 10
+        res = loads(dumps(b))
+        self.assertEqual(res.a.a.b, 10)
