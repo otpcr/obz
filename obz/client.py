@@ -57,7 +57,7 @@ class Output:
 
     def display(self, evt):
         for txt in evt.result:
-            self.raw(txt)
+            self.oput(evt.channel, txt)
 
     def dosay(self, channel, txt):
         self.raw(txt)

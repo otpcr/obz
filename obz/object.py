@@ -82,12 +82,13 @@ def loads(string, *args, **kw):
 def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
-        if isinstance(val, zip):
+        try:
             update(obj, dict(val))
-        elif isinstance(val, dict):
-            update(obj, val)
-        elif isinstance(val, Object):
-            update(obj, vars(val))
+        except ValueError:
+            try:
+                update(obj, val)
+            except ValueError:
+                update(obj, vars(val))
     if kwargs:
         update(obj, kwargs)
 
