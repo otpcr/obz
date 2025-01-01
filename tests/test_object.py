@@ -8,8 +8,7 @@
 import unittest
 
 
-from obz.object import Object
-from obz.method import format, items, keys, update, values
+from obz.object import Object, items, keys, update, values
 
 
 import obz
@@ -23,14 +22,10 @@ attrs1 = (
     'Obj',
     'construct',
     'dumps',
-    'edit',
-    'format',
     'fqn',
     'items',
     'keys',
     'loads',
-    'match',
-    'search',
     'update',
     'values'
 )
@@ -103,11 +98,6 @@ class TestObject(unittest.TestCase):
     def test_dict(self):
         obj = Object()
         self.assertEqual(obj.__dict__, {})
-
-    def test_format(self):
-        obj = Object()
-        obj.a = "b"
-        self.assertEqual(format(obj), 'a=b')
 
     def test_getattribute(self):
         obj = Object()
