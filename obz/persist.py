@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R0903,W0105,W0719,E1101
+# pylint: disable=C,R0903,W0105,W0622,W0719,E1101
 
 
 "persistence"
@@ -47,10 +47,10 @@ class Cache:
             return Cache.objs.get(path)
 
     @staticmethod
-    def typed(match):
+    def typed(matcher):
         with cachelock:
             for key in Cache.objs:
-                if match not in key:
+                if matcher not in key:
                     continue
                 yield Cache.objs.get(key)
 

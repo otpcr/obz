@@ -1,11 +1,10 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W1503
+# pylint: disable=C,R,W0201,W1503
 
 
 "no tests"
 
 
-import types
 import unittest
 
 
