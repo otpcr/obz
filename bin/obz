@@ -16,8 +16,8 @@ sys.path.insert(0, os.getcwd())
 
 
 from obz.client  import Client, Commands, command, parse, scan
+from obz.disk    import Config, pidfile, pidname
 from obz.modules import face
-from obz.persist import Config, pidfile, pidname
 from obz.runtime import Event, errors, later
 
 

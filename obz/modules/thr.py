@@ -9,7 +9,7 @@ import threading
 import time
 
 
-from ..locate import laps
+from ..find   import laps
 from ..object import Object, update
 
 

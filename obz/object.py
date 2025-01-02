@@ -115,6 +115,13 @@ def edit(obj, setter, skip=False):
             setattr(obj, key, val)
 
 
+def fqn(obj):
+    kin = str(type(obj)).split()[-1][1:-2]
+    if kin == "type":
+        kin = f"{obj.__module__}.{obj.__name__}"
+    return kin
+
+
 def items(obj):
     if isinstance(obj,type({})):
         return obj.items()
@@ -146,6 +153,7 @@ def __dir__():
         'Object',
         'construct',
         'edit',
+        'fqn',
         'keys',
         'items',
         'values',

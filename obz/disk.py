@@ -2,7 +2,7 @@
 # pylint: disable=C,R0903,W0105,W0622,W0719,E1101
 
 
-"persistence"
+"disk"
 
 
 import datetime
@@ -13,7 +13,7 @@ import time
 import _thread
 
 
-from .object import Object, dumps, items, keys, loads, update
+from .object import Object, dumps, fqn, items, keys, loads, update
 
 
 cachelock = _thread.allocate_lock()
@@ -102,6 +102,17 @@ def types():
 "utilities"
 
 
+def fns(mtc=""):
+    dname = ''
+    with disklock:
+        pth = store(mtc)
+        for rootdir, dirs, _files in os.walk(pth, topdown=False):
+            if dirs:
+                for dname in sorted(dirs):
+                    if dname.count('-') == 2:
+                        ddd = p(rootdir, dname)
+                        for fll in os.scandir(ddd):
+                            yield strip(p(ddd, fll))
 
 
 def pidfile(filename):

@@ -6,12 +6,14 @@
 
 
 import os
+import _thread
 
 
-from .object  import Object
-from .persist import long
+from .disk   import fns, long
+from .object import Object, fqn
 
 
+findlock = _thread.allocate_lock()
 p = os.path.join
 
 
@@ -35,19 +37,6 @@ def find(mtc, selector=None, index=None, deleted=False, matching=False):
                 continue
             Cache.add(fnm, obj)
             yield (fnm, obj)
-
-
-def fns(mtc=""):
-    dname = ''
-    with disklock:
-        pth = store(mtc)
-        for rootdir, dirs, _files in os.walk(pth, topdown=False):
-            if dirs:
-                for dname in sorted(dirs):
-                    if dname.count('-') == 2:
-                        ddd = p(rootdir, dname)
-                        for fll in os.scandir(ddd):
-                            yield strip(p(ddd, fll))
 
 
 def fntime(daystr):

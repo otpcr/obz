@@ -8,9 +8,9 @@
 import time
 
 
-from ..locate  import find, fntime, laps
-from ..object  import Object
-from ..persist import ident, write
+from ..disk   import ident, write
+from ..find   import find, fntime, laps
+from ..object import Object
 
 
 class Log(Object):
