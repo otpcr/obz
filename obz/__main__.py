@@ -68,7 +68,7 @@ def background():
     daemon(True)
     privileges()
     pidfile(pidname(Config.name))
-    from obz.modules import face
+    from .modules import face
     scan(face, init=True)
     forever()
 
@@ -89,7 +89,7 @@ def console():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    from obz.modules import face
+    from .modules import face
     for mod, thr in scan(face, init="i" in cfg.opts, disable=cfg.sets.dis):
         if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
@@ -105,7 +105,7 @@ def control():
     parse(cfg, " ".join(sys.argv[1:]))
     if not cfg.otxt:
         return
-    from obz.modules import face
+    from .modules import face
     scan(face)
     evt = Event()
     evt.type = "command"
@@ -154,7 +154,7 @@ def privileges():
 def service():
     privileges()
     pidfile(pidname(Config.name))
-    from obz.modules import face as mods
+    from .modules import face as mods
     scan(mods, init=True)
     forever()
 
