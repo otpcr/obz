@@ -6,11 +6,12 @@
 
 
 import os
+import time
 import _thread
 
 
-from .disk   import fns, long
-from .object import Object, fqn
+from .disk   import Cache, fns, long, read
+from .object import Object, fqn, items, keys, update
 
 
 findlock = _thread.allocate_lock()

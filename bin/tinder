@@ -18,9 +18,10 @@ sys.path.insert(0, os.getcwd())
 
 
 from obz.client  import Client, Commands, parse, scan
+from obz.disk    import Config, skel
+from obz.find    import laps
 from obz.modules import face
 from obz.object  import Object
-from obz.persist import Config, laps, skel
 from obz.runtime import Event, errors, later, launch
 
 

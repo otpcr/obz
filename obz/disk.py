@@ -9,11 +9,10 @@ import datetime
 import json
 import os
 import pathlib
-import time
 import _thread
 
 
-from .object import Object, dumps, fqn, items, keys, loads, update
+from .object import dumps, fqn, loads, update
 
 
 cachelock = _thread.allocate_lock()
@@ -124,8 +123,6 @@ def pidfile(filename):
         fds.write(str(os.getpid()))
 
 
-
-
 def strip(pth, nmr=3):
     return os.sep.join(pth.split(os.sep)[-nmr:])
 
@@ -141,36 +138,6 @@ def fetch(obj, pth):
                 update(obj, obj2)
             except json.decoder.JSONDecodeError as ex:
                 raise Exception(pth) from ex
-
-
-def format(obj, args=None, skip=None, plain=False):
-    if args is None:
-        args = keys(obj)
-    if skip is None:
-        skip = []
-    txt = ""
-    for key in args:
-        if key.startswith("__"):
-            continue
-        if key in skip:
-            continue
-        value = getattr(obj, key, None)
-        if value is None:
-            continue
-        if plain:
-            txt += f"{value} "
-        elif isinstance(value, str) and len(value.split()) >= 2:
-            txt += f'{key}="{value}" '
-        else:
-            txt += f'{key}={value} '
-    return txt.strip()
-
-
-def fqn(obj):
-    kin = str(type(obj)).split()[-1][1:-2]
-    if kin == "type":
-        kin = f"{obj.__module__}.{obj.__name__}"
-    return kin
 
 
 def ident(obj):

@@ -18,17 +18,19 @@ from obz.object import *
 
 
 import obz.client
+import obz.disk
+import obz.find
 import obz.modules
 import obz.object
-import obz.persist
 import obz.runtime
 
 
 PACKAGE = [
     'client',
+    'disk',
+    'find',
     'modules',
     'object',
-    'persist',
     'runtime'
 ]
 

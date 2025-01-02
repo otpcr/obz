@@ -19,7 +19,7 @@ from urllib.parse import quote_plus, urlencode
 
 
 from ..client  import spl
-from ..disk    import Cache, write
+from ..disk    import Cache, ident, write
 from ..find    import find, fntime, format, laps, last
 from ..object  import Object, update
 from ..runtime import Repeater, launch

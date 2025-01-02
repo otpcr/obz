@@ -8,7 +8,7 @@
 import time
 
 
-from ..disk   import ident, write
+from ..disk   import write
 from ..find   import find, fntime, laps
 from ..object import Object
 
