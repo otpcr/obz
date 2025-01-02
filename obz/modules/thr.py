@@ -9,8 +9,8 @@ import threading
 import time
 
 
-from ..object  import Object, update
-from ..persist import laps
+from ..locate import laps
+from ..object import Object, update
 
 
 STARTTIME = time.time()

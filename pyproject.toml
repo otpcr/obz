@@ -24,12 +24,6 @@ classifiers = [
 ]
 
 
-[project.scripts]
-"obz" = "obz.__main__:wrapped"
-"obzd" = "obz.__main__:background"
-"obzs" = "obz.__main__:wraps"
-
-
 [project.urls]
 "home" = "https://pypi.org/project/obz"
 "bugs" = "https://github.com/otpcr/obz/issues"
@@ -37,6 +31,9 @@ classifiers = [
 
 
 [tool.setuptools]
+script-files = [
+    'bin/obz',
+]
 packages = [
     "obz",
     "obz.modules"

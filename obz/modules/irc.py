@@ -17,8 +17,9 @@ import _thread
 
 
 from ..client  import Commands, command, spl
-from ..object  import Object, keys
-from ..persist import Cache, edit, format, ident, last, write
+from ..locate  import format, last
+from ..object  import Object, edit, keys
+from ..persist import Cache, ident, write
 from ..persist import Config as Main
 from ..runtime import Event, Reactor, later, launch
 

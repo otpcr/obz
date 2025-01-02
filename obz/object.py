@@ -93,6 +93,28 @@ def construct(obj, *args, **kwargs):
         update(obj, kwargs)
 
 
+def edit(obj, setter, skip=False):
+    for key, val in items(setter):
+        if skip and val == "":
+            continue
+        try:
+            setattr(obj, key, int(val))
+            continue
+        except ValueError:
+            pass
+        try:
+            setattr(obj, key, float(val))
+            continue
+        except ValueError:
+            pass
+        if val in ["True", "true"]:
+            setattr(obj, key, True)
+        elif val in ["False", "false"]:
+            setattr(obj, key, False)
+        else:
+            setattr(obj, key, val)
+
+
 def items(obj):
     if isinstance(obj,type({})):
         return obj.items()
@@ -121,10 +143,9 @@ def values(obj):
 
 def __dir__():
     return (
-        'Decoder',
-        'Encoder',
         'Object',
         'construct',
+        'edit',
         'keys',
         'items',
         'values',

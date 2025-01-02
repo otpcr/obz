@@ -180,6 +180,19 @@ def parse(obj, txt=None) -> None:
     return obj
 
 
+def pidfile(filename):
+    if os.path.exists(filename):
+        os.unlink(filename)
+    path2 = pathlib.Path(filename)
+    path2.parent.mkdir(parents=True, exist_ok=True)
+    with open(filename, "w", encoding="utf-8") as fds:
+        fds.write(str(os.getpid()))
+
+
+def strip(pth, nmr=3):
+    return os.sep.join(pth.split(os.sep)[-nmr:])
+
+
 def scan(*pkgs, init=False, disable=""):
     result = []
     for mod in modloop(*pkgs, disable=disable):

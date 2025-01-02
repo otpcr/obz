@@ -8,8 +8,9 @@
 import time
 
 
+from ..locate  import find, fntime, laps
 from ..object  import Object
-from ..persist import find, fntime, ident, laps, write
+from ..persist import ident, write
 
 
 class Log(Object):
@@ -31,5 +32,5 @@ def log(event):
         return
     obj = Log()
     obj.txt = event.rest
-    write(obj, ident(obj))
+    write(obj)
     event.reply('ok')

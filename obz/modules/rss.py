@@ -19,8 +19,9 @@ from urllib.parse import quote_plus, urlencode
 
 
 from ..client  import spl
+from ..locate  import find, fntime, format, laps, last
 from ..object  import Object, update
-from ..persist import Cache, find, fntime, format, laps, last, ident, write
+from ..persist import Cache, write
 from ..runtime import Repeater, launch
 
 
@@ -105,7 +106,7 @@ class Fetcher(Object):
                 if uurl in seen:
                     continue
                 if self.dosave:
-                    write(fed, ident(fed))
+                    write(fed)
                 result.append(fed)
             setattr(self.seen, feed.rss, urls)
             if not self.seenfn:
@@ -328,7 +329,7 @@ def rss(event):
             return
     feed = Rss()
     feed.rss = event.args[0]
-    write(feed, ident(feed))
+    write(feed)
     event.reply('ok')
 
 
