@@ -5,8 +5,8 @@
 "commands"
 
 
-from ..client import Commands
-from ..object import keys
+from ..object  import keys
+from ..runtime import Commands
 
 
 def cmd(event):

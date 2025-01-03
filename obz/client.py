@@ -5,31 +5,12 @@
 "client"
 
 
-import inspect
 import os
 import pathlib
 import queue
-import types
 
 
-from .runtime import Reactor, later, launch
-
-
-class Commands:
-
-    cmds = {}
-
-    @staticmethod
-    def add(func):
-        Commands.cmds[func.__name__] = func
-
-    @staticmethod
-    def scan(mod):
-        for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
-            if key.startswith("cb"):
-                continue
-            if 'event' in cmdz.__code__.co_varnames:
-                Commands.add(cmdz)
+from .runtime import Reactor, command, launch
 
 
 class Default:
@@ -94,39 +75,21 @@ class Client(Output, Reactor):
     def __init__(self):
         Output.__init__(self)
         Reactor.__init__(self)
-        self.register("command", command)
+        self.register("command", cmnd)
 
     def start(self):
         Output.start(self)
         Reactor.start(self)
 
 
-def command(bot, evt):
+def cmnd(bot, evt):
     parse(evt, evt.txt)
-    if "ident" in dir(bot):
-        evt.orig = bot.ident
-    func = Commands.cmds.get(evt.cmd, None)
-    if func:
-        try:
-            func(evt)
-            bot.display(evt)
-        except Exception as ex:
-            later(ex)
+    command(bot, evt)
+    bot.display(evt)
     evt.ready()
 
 
-def modloop(*pkgs, disable=""):
-    for pkg in pkgs:
-        for modname in dir(pkg):
-            if modname in spl(disable):
-                continue
-            if modname.startswith("__"):
-                continue
-            yield getattr(pkg, modname)
-
-
-
-def parse(obj, txt=None) -> None:
+def parse(obj, txt=None):
     if txt is None:
         txt = ""
     args = []
@@ -195,35 +158,10 @@ def strip(pth, nmr=3):
     return os.sep.join(pth.split(os.sep)[-nmr:])
 
 
-def scan(*pkgs, init=False, disable=""):
-    result = []
-    for mod in modloop(*pkgs, disable=disable):
-        if type(mod) is not types.ModuleType:
-            continue
-        Commands.scan(mod)
-        thr = None
-        if init and "init" in dir(mod):
-            thr = launch(mod.init)
-        result.append((mod, thr))
-    return result
-
-
-def spl(txt):
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
-
-
-
 def __dir__():
     return (
         'Client',
-        'Commands',
         'Default',
         'Output',
-        'command',
         'parse',
-        'scan'
     )

@@ -15,10 +15,10 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.client  import Client, Commands, command, parse, scan
+from obz.client  import Client, Commands, command, parse
 from obz.disk    import Config, pidfile, pidname
 from obz.modules import face
-from obz.runtime import Event, errors, later
+from obz.runtime import Event, errors, later, scan
 
 
 Config.name = Config.__module__.split(".", maxsplit=2)[-2]

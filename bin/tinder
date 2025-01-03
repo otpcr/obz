@@ -17,12 +17,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.client  import Client, Commands, parse, scan
+from obz.client  import Client, parse
 from obz.disk    import Config, skel
 from obz.find    import laps
 from obz.modules import face
 from obz.object  import Object
-from obz.runtime import Event, errors, later, launch
+from obz.runtime import Commands, Event, errors, later, launch, scan
 
 
 Config.name = "tinder"

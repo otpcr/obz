@@ -10,10 +10,10 @@ import uuid
 import _thread
 
 
-from ..client import spl
-from ..disk   import write
-from ..find   import find
-from ..object import Object, update
+from ..disk    import write
+from ..find    import find
+from ..object  import Object, update
+from ..runtime import spl
 
 
 from .rss import Rss
