@@ -16,12 +16,16 @@ import time
 import _thread
 
 
-from ..client  import cmnd
-from ..disk    import Cache, ident, write
-from ..disk    import Config as Main
-from ..find    import format, last
-from ..object  import Object, edit, keys
-from ..runtime import Commands, Event, Reactor, later, launch, spl
+from ..cache   import Cache
+from ..command import command, spl
+from ..event   import Event
+from ..find    import format, ident, last, store
+from ..object  import Object, Obj, edit, keys, write
+from ..reactor import Reactor
+from ..thread  import later, launch
+
+
+"defines"
 
 
 IGNORE = ["PING", "PONG", "PRIVMSG"]
@@ -30,6 +34,9 @@ NAME   = Object.__module__.rsplit(".", maxsplit=2)[-2]
 
 output = None
 saylock = _thread.allocate_lock()
+
+
+"init"
 
 
 def debug(txt):
@@ -48,7 +55,10 @@ def init():
     return irc
 
 
-class Config(Object):
+"config"
+
+
+class Config(Obj):
 
     channel = f'#{NAME}'
     commands = True
@@ -65,7 +75,7 @@ class Config(Object):
     users = False
 
     def __init__(self):
-        Object.__init__(self)
+        Obj.__init__(self)
         self.channel = Config.channel
         self.commands = Config.commands
         self.nick = Config.nick
@@ -73,6 +83,9 @@ class Config(Object):
         self.realname = Config.realname
         self.server = Config.server
         self.username = Config.username
+
+
+"textwrap"
 
 
 class TextWrap(textwrap.TextWrapper):
@@ -88,6 +101,9 @@ class TextWrap(textwrap.TextWrapper):
 
 
 wrapper = TextWrap()
+
+
+"output"
 
 
 class Output:
@@ -150,6 +166,9 @@ class Output:
         if chan in dir(Output.cache):
             return len(getattr(Output.cache, chan, []))
         return 0
+
+
+"irc"
 
 
 class IRC(Reactor, Output):
@@ -500,6 +519,9 @@ class IRC(Reactor, Output):
         self.events.ready.wait()
 
 
+"callbacks"
+
+
 def cb_auth(bot, evt):
     bot.docommand(f'AUTHENTICATE {bot.cfg.password}')
 
@@ -562,7 +584,7 @@ def cb_privmsg(bot, evt):
         if evt.txt:
             evt.txt = evt.txt[0].lower() + evt.txt[1:]
         if evt.txt:
-            cmnd(bot, evt)
+            command(bot, evt)
 
 
 def cb_quit(bot, evt):
@@ -587,8 +609,8 @@ def cfg(event):
                    )
     else:
         edit(config, event.sets)
-        write(config)
-        event.reply('ok')
+        write(config, store(ident(config)))
+        event.ok()
 
 
 def mre(event):

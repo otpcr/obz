@@ -18,10 +18,16 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from ..disk    import Cache, ident, write
-from ..find    import find, fntime, format, laps, last
-from ..object  import Object, update
-from ..runtime import Repeater, launch, spl
+from ..cache   import Cache
+from ..command import spl
+from ..find    import find, fntime, format, ident, last, store
+from ..object  import Object, update, write
+from ..timers  import Repeater
+from ..thread  import launch
+from ..utils   import elapsed
+
+
+"defines"
 
 
 DEBUG = False
@@ -30,10 +36,16 @@ DEBUG = False
 fetchlock  = _thread.allocate_lock()
 
 
+"init"
+
+
 def init():
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
+
+
+"feed"
 
 
 class Feed(Object):
@@ -41,6 +53,9 @@ class Feed(Object):
     def __init__(self):
         Object.__init__(self)
         self.link = ""
+
+
+"rss"
 
 
 class Rss(Object):
@@ -52,9 +67,15 @@ class Rss(Object):
         self.rss          = ''
 
 
+"urls"
+
+
 class Urls(Object):
 
     pass
+
+
+"fetcher"
 
 
 class Fetcher(Object):
@@ -105,11 +126,11 @@ class Fetcher(Object):
                 if uurl in seen:
                     continue
                 if self.dosave:
-                    write(fed)
+                    write(fed, store(ident(fed)))
                 result.append(fed)
             setattr(self.seen, feed.rss, urls)
             if not self.seenfn:
-                self.seenfn = ident(self.seen)
+                self.seenfn = store(ident(self.seen))
             write(self.seen, self.seenfn)
         if silent:
             return counter
@@ -134,6 +155,9 @@ class Fetcher(Object):
         if repeat:
             repeater = Repeater(300.0, self.run)
             repeater.start()
+
+
+"parser"
 
 
 class Parser:
@@ -185,6 +209,9 @@ class Parser:
                     setattr(obj, itm, val)
             result.append(obj)
         return result
+
+
+"utilities"
 
 
 def cdata(line):
@@ -267,7 +294,7 @@ def dpl(event):
         if feed:
             update(feed, setter)
             write(feed, fnm)
-    event.reply('ok')
+    event.ok()
 
 
 def nme(event):
@@ -279,7 +306,7 @@ def nme(event):
         if feed:
             feed.name = event.args[1]
             write(feed, fnm)
-    event.reply('ok')
+    event.ok()
 
 
 def rem(event):
@@ -292,7 +319,7 @@ def rem(event):
         if feed:
             feed.__deleted__ = True
             write(feed, fnm)
-    event.reply('ok')
+    event.ok()
 
 
 def res(event):
@@ -305,7 +332,7 @@ def res(event):
         if feed:
             feed.__deleted__ = False
             write(feed, fnm)
-    event.reply('ok')
+    event.ok()
 
 
 def rss(event):
@@ -313,7 +340,7 @@ def rss(event):
         nrs = 0
         for fnm, feed in find('rss'):
             nrs += 1
-            elp = laps(time.time()-fntime(fnm))
+            elp = elapsed(time.time()-fntime(fnm))
             txt = format(feed)
             event.reply(f'{nrs} {txt} {elp}')
         if not nrs:
@@ -328,8 +355,8 @@ def rss(event):
             return
     feed = Rss()
     feed.rss = event.args[0]
-    write(feed)
-    event.reply('ok')
+    write(feed, store(ident(feed)))
+    event.ok()
 
 
 def syn(event):

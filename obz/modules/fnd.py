@@ -1,15 +1,20 @@
 # This file is placed in the Public Domain.[B
-# pylint: disable=W,C0116,E0402
+# pylint: disable=C,W0105,E0402
 
 
 "find"
 
 
+import os
+import pathlib
 import time
 
 
-from ..disk import long, skel, types
-from ..find import find, fntime, format, laps
+from ..find  import find, fntime, format, long, skel, types
+from ..utils import elapsed
+
+
+"commands"
 
 
 def fnd(event):
@@ -23,7 +28,7 @@ def fnd(event):
     clz = long(otype)
     nmr = 0
     for fnm, obj in find(clz, event.gets):
-        event.reply(f"{nmr} {format(obj)} {laps(time.time()-fntime(fnm))}")
+        event.reply(f"{nmr} {format(obj)} {elapsed(time.time()-fntime(fnm))}")
         nmr += 1
     if not nmr:
         event.reply("no result")

@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0116,E0402
+# pylint: disable=C0116,W0105,E0402
 
 
 "uptime"
@@ -8,11 +8,17 @@
 import time
 
 
-from ..find import laps
+from ..utils import elapsed
+
+
+"defines"
 
 
 STARTTIME = time.time()
 
 
+"commands"
+
+
 def upt(event):
-    event.reply(laps(time.time()-STARTTIME))
+    event.reply(elapsed(time.time()-STARTTIME))

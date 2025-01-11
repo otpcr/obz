@@ -9,6 +9,9 @@
 from . import cmd, err, fnd, irc, log, mod, opm, rss, tdo, thr, upt
 
 
+"teh dir"
+
+
 def __dir__():
     return (
         'cmd',
