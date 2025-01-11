@@ -11,8 +11,6 @@ import pathlib
 import time
 
 
-from .cache  import Cache
-from .config import Config
 from .object import Object, items, keys, read, update
 
 
@@ -67,7 +65,6 @@ def types():
 def fns(clz):
     dname = ''
     pth = store(clz)
-    res = []
     for rootdir, dirs, _files in os.walk(pth, topdown=False):
         if dirs:
             for dname in sorted(dirs):

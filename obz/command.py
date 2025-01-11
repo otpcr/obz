@@ -11,9 +11,8 @@ import _thread
 
 
 from .cache  import Fleet
-from .object import Obj
 from .parse  import parse
-from .thread import later, launch
+from .thread import launch
 from .utils  import locked
 
 

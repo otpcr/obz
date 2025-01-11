@@ -5,15 +5,10 @@
 "client"
 
 
-import queue
-import threading
-
-
 from .cache   import Fleet
 from .command import command
 from .output  import Output
 from .reactor import Reactor
-from .thread  import launch
 
 
 "client"

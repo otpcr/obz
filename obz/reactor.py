@@ -7,10 +7,10 @@
 
 import queue
 import threading
-import time
+import _thread
 
 
-from .thread import launch
+from .thread import later, launch
 
 
 "reactor"

@@ -17,7 +17,7 @@ import _thread
 
 
 from ..cache   import Cache
-from ..command import command, spl
+from ..command import command
 from ..event   import Event
 from ..find    import format, ident, last, store
 from ..object  import Object, Obj, edit, keys, write

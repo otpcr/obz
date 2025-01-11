@@ -12,7 +12,7 @@ import time
 import _thread
 
 
-from .client  import Buffered, Client
+from .client  import Client
 from .command import Commands, command, parse, scan
 from .config  import Config
 from .event   import Event
@@ -132,7 +132,7 @@ def background():
 
 
 def console():
-    import readline
+    import readline # noqa: F401
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
