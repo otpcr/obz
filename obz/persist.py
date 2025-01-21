@@ -20,10 +20,8 @@ from obz.objects import Object, dumps, items, keys, loads, update
 p = os.path.join
 
 
-#rwlock = _thread.allocate_lock()
 rwlock = threading.RLock()
-#lock   = _thread.allocate_lock()
-lock = threading.RLock()
+lock   = threading.RLock()
 
 "cache"
 
