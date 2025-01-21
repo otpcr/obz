@@ -4,7 +4,6 @@
 "fleet"
 
 
-from obz.objects import values
 from obz.clients import Fleet
 from obz.threads import name
 

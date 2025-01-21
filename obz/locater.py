@@ -88,7 +88,6 @@ def fns(clz):
 def find(clz, selector=None, deleted=False, matching=False):
     skel()
     with lock:
-        nrs = -1
         pth = long(clz)
         res = []
         for fnm in fns(pth):
