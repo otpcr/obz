@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0115,C0116,C0209,W0105
 
 
 "**Genocide** model of the Netherlands since **4 March 2019**"
@@ -356,7 +357,7 @@ def cbstats(evt):
             obj.announce(txt)
 
 
-def all(event):
+def dis(event):
     delta = time.time() - STARTTIME
     txt = elapsed(delta) + " "
     for nme in sorted(keys(oorzaken), key=lambda x: seconds(getnr(x))):
@@ -423,7 +424,7 @@ def boot():
 def __dir__():
     return (
             'init',
-            'all',
+            'dis',
             'now'
            )
 

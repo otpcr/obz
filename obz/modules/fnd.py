@@ -10,10 +10,8 @@ import time
 from obz.locater import elapsed, find, fntime, fmt, long, skel, types
 
 
-"commands"
-
-
 def fnd(event):
+    """ find objects. """
     skel()
     if not event.rest:
         res = sorted([x.split('.')[-1].lower() for x in types()])

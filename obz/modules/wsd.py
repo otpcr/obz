@@ -191,4 +191,5 @@ rand = SystemRandom()
 
 
 def wsd(event):
+    """ wijs, wijsheid, wijs """
     event.reply(rand.choice(__doc__.split("\n")).strip()[2:])

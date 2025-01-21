@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0115,C0116,W0105
 
 
 "OPML"
@@ -11,10 +12,8 @@ import _thread
 
 from obz.command import spl
 from obz.locater import find, ident, store
+from obz.modules import rss
 from obz.objects import Object, update, write
-
-
-from  .rss     import Rss
 
 
 importlock = _thread.allocate_lock()
@@ -107,7 +106,7 @@ def exp(event):
     nrs = 0
     for _fn, ooo in find("rss"):
         nrs += 1
-        obj = Rss()
+        obj = rss.Rss()
         update(obj, ooo)
         name = f"url{nrs}"
         txt = f'<outline name="{name}" display_list="{obj.display_list}" xmlUrl="{obj.rss}"/>'
@@ -143,7 +142,7 @@ def imp(event):
                 skipped.append(url)
                 nrskip += 1
                 continue
-            feed = Rss()
+            feed = rss.Rss()
             update(feed, obj)
             feed.rss = obj.xmlUrl
             feed.insertid = insertid

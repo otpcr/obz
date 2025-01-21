@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0115,C0116,R0903
 
 
 "clients"
@@ -32,7 +33,7 @@ class Client(Reactor):
 class Config(Default):
 
     name = Default.__module__.rsplit(".", maxsplit=2)[-2]
-    
+
 
 class Fleet:
 
@@ -47,9 +48,12 @@ class Fleet:
         for bot in Fleet.bots:
             bot.announce(txt)
 
-    def first(self):
-        if Fleet.bots:
-            return Fleet.bots.values()[0]
+    @staticmethod
+    def first():
+        bots =  Fleet.bots.values()
+        if not bots:
+            bots.append(Client())
+        return bots[0]
 
     @staticmethod
     def get(name):

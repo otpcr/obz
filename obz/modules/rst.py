@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0103,C0115,C0116,C0209,R0903
 
 
 "rest"
@@ -12,7 +13,7 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from obz.locater import Workdir, fns
+from obz.locater import Workdir, types
 from obz.objects import Default, Object
 from obz.threads import later, launch
 
@@ -55,15 +56,15 @@ class REST(HTTPServer, Object):
         time.sleep(0.2)
         self.shutdown()
 
-    def start(self): 
+    def start(self):
         self._status = "ok"
         self.serve_forever()
 
     def request(self):
         self._last = time.time()
 
-    def error(self, request, addr):
-        exctype, excvalue, tb = sys.exc_info()
+    def error(self, _request, _addr):
+        exctype, excvalue, _trb = sys.exc_info()
         exc = exctype(excvalue)
         later(exc)
 
@@ -91,15 +92,15 @@ class RESTHandler(BaseHTTPRequestHandler):
         if self.path == "/":
             self.write_header("text/html")
             txt = ""
-            for fnm in fns():
+            for fnm in types():
                 txt += f'<a href="http://{Config.hostname}:{Config.port}/{fnm}">{fnm}</a><br>\n'
             self.send(html(txt.strip()))
             return
-        fnm = Workdir.workdir + os.sep + "store" + os.sep + self.path
+        fnm = Workdir.wdr + os.sep + "store" + os.sep + self.path
         try:
-            f = open(fnm, "r", encoding="utf-8")
-            txt = f.read()
-            f.close()
+            with open(fnm, "r", encoding="utf-8") as file:
+                txt = file.read()
+                file.close()
             self.write_header("txt/plain")
             self.send(html(txt))
         except (TypeError, FileNotFoundError, IsADirectoryError) as ex:

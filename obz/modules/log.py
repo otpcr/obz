@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0115,C0116,R0903
 
 
 "log text"
@@ -11,9 +12,6 @@ from obz.locater import elapsed, find, fntime, ident, store
 from obz.objects import Object, write
 
 
-"log"
-
-
 class Log(Object):
 
     def __init__(self):
@@ -21,10 +19,8 @@ class Log(Object):
         self.txt = ''
 
 
-"commands"
-
-
 def log(event):
+    """ log text. """
     if not event.rest:
         nmr = 0
         for fnm, obj in find('log'):

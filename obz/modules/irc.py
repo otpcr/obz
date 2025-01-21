@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=R,C0115,C0116,W0105,W0718
 
 
 "internet relay chat"
@@ -30,7 +31,6 @@ IGNORE = ["PING", "PONG", "PRIVMSG"]
 NAME   = Object.__module__.rsplit(".", maxsplit=2)[-2]
 
 
-output = None
 saylock = _thread.allocate_lock()
 
 
@@ -41,8 +41,7 @@ def debug(txt):
     for ign in IGNORE:
         if ign in txt:
             return
-    if output:
-        output(txt)
+    # output here
 
 
 def init():
