@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0116
 
 
 "show running threads."
@@ -16,7 +17,6 @@ STARTTIME = time.time()
 
 
 def thr(event):
-    """ show running threads. """
     result = []
     for thread in sorted(threading.enumerate(), key=lambda x: x.name):
         if str(thread).startswith('<_'):

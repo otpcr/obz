@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0116
 
 
 "show list of commands"
@@ -8,5 +9,4 @@ from obz.command import Commands
 
 
 def cmd(event):
-    """ show available commands. """
     event.reply(",".join(sorted(Commands.cmds.keys())))

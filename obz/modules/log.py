@@ -20,7 +20,6 @@ class Log(Object):
 
 
 def log(event):
-    """ log text. """
     if not event.rest:
         nmr = 0
         for fnm, obj in find('log'):

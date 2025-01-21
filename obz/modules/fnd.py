@@ -1,4 +1,5 @@
-# This file is placed in the Public Domain.[B
+# This file is placed in the Public Domain.
+# pylint: disable=C0116
 
 
 "find"
@@ -11,7 +12,6 @@ from obz.locater import elapsed, find, fntime, fmt, long, skel, types
 
 
 def fnd(event):
-    """ find objects. """
     skel()
     if not event.rest:
         res = sorted([x.split('.')[-1].lower() for x in types()])

@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0116
 
 
 "errors"
@@ -8,7 +9,6 @@ from obz.threads import Errors
 
 
 def err(event):
-    """ show errors. """
     nmr = 0
     for exc in Errors.errors:
         for line in exc:
