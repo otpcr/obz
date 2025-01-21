@@ -9,7 +9,7 @@ import os
 import time
 
 
-from obz.locater import elapsed, find, fntime, format, store, ident
+from obz.locater import elapsed, find, fntime, fmt, store, ident
 from obz.objects import Object, update, write
 
 
@@ -74,7 +74,7 @@ def cor(event):
             txt = ",".join(event.args[1:])
         else:
             txt = "From,Subject"
-        event.reply("%s %s %s" % (nr, formt(email, txt, plain=True), elapsed(time.time() - fntime(email.__stp__))))
+        event.reply("%s %s %s" % (nr, fmt(email, txt, plain=True), elapsed(time.time() - fntime(email.__stp__))))
 
 
 def eml(event):
@@ -83,11 +83,11 @@ def eml(event):
     if event.index:
         o = result[event.index][1]
         tme = getattr(o, "Date", "")
-        event.reply(f'{event.index} {format(o, ["From", "Subject"] + event.args)}')
+        event.reply(f'{event.index} {format(o, ["From", "Subject"] + event.args)} {elapsed(time.time() - fntime(tme))}')
     else:
         for fnm, o in result:
             nrs += 1
-            event.reply(f'{nr} {format(o, ["From", "Subject"])} {elapsed(time.time() - fntime(fnm))}')
+            event.reply(f'{nrs} {format(o, ["From", "Subject"])} {elapsed(time.time() - fntime(fnm))}')
 
 
 def mbx(event):

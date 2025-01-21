@@ -47,6 +47,10 @@ class Fleet:
         for bot in Fleet.bots:
             bot.announce(txt)
 
+    def first(self):
+        if Fleet.bots:
+            return Fleet.bots.values()[0]
+
     @staticmethod
     def get(name):
         return Fleet.bots.get(name, None)

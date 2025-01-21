@@ -18,7 +18,7 @@ import _thread
 from obz.clients import Fleet
 from obz.command import command
 from obz.objects import Default, Object, edit, keys, write
-from obz.locater import format, ident, last, store
+from obz.locater import fmt, ident, last, store
 from obz.reactor import Event, Reactor
 from obz.threads import later, launch
 
@@ -49,7 +49,7 @@ def init():
     irc = IRC()
     irc.start()
     irc.events.ready.wait()
-    debug(f'{format(Config, skip="edited,password")}')
+    debug(f'{fmt(Config, skip="edited,password")}')
     return irc
 
 
@@ -601,7 +601,7 @@ def cfg(event):
     last(config)
     if not event.sets:
         event.reply(
-                    format(
+                    fmt(
                         config,
                         keys(config),
                         skip='control,password,realname,sleep,username'.split(",")

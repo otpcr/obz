@@ -17,15 +17,13 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.client  import Client
+from obz.clients import Client, Config
 from obz.command import Commands, parse, scan
-from obz.config  import Config
-from obz.event   import Event
-from obz.find    import Workdir, skel
-from obz.modules import face
-from obz.object  import Object, keys
-from obz.thread  import errors, later, launch
-from obz.utils   import elapsed
+from obz.locater import Workdir, elapsed, skel
+from obz.objects import Object, keys
+from obz.modules import face as MODS
+from obz.reactor import Event
+from obz.threads import launch, errors, later
 
 
 "defines"
@@ -36,6 +34,13 @@ Workdir.wdr  = ".test"
 
 cfg = Config()
 cfg.index = 0
+
+
+
+if os.path.exists("mods"):
+    import mods
+else:
+    mods = None
 
 
 lap = 1
@@ -55,7 +60,7 @@ param.cmd = [""]
 param.dne = ["mekker", ""]
 param.dpl = ["hnrss title,url", ""]
 param.exp = ['']
-param.fnd = ["log", "todo", "rss", "config", "urls", ""]
+param.fnd = ["log", ""]
 param.imp = ["tests/feeds.opml", ""]
 param.log = ["bla", ""]
 param.mod = [""]
@@ -79,7 +84,6 @@ class CLI(Client):
     def raw(self, txt):
         if "v" in cfg.opts:
             print(txt)
-            sys.stdout.flush()
 
 
 "utilities"
@@ -88,7 +92,7 @@ class CLI(Client):
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
     print(f"{Config.name.upper()} since {tme}")
-    print(keys(Commands.cmds))
+    print(",".join(keys(Commands.cmds)))
 
 
 def consume(evts):
@@ -138,8 +142,8 @@ def main():
     global nrs
     global nrcommand
     parse(cfg, " ".join(sys.argv[1:]))
-    face.rss.DEBUG = True
-    scan(face)
+    MODS.rss.DEBUG = True
+    scan(MODS, mods)
     nrcommand = len(Commands.cmds) or 1
     if "v" in cfg.opts:
         banner()
@@ -158,7 +162,7 @@ def main():
         thr.join()
     consume(events)
     clt.stop()
-    clt.wait()
+    #clt.wait()
 
 
 if __name__ == "__main__":

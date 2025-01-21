@@ -12,7 +12,7 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from obz.locater import Workdir, fns, format
+from obz.locater import Workdir, fns
 from obz.objects import Default, Object
 from obz.threads import later, launch
 

@@ -19,7 +19,7 @@ from urllib.parse import quote_plus, urlencode
 
 from obz.clients import Fleet
 from obz.command import spl
-from obz.locater import elapsed, find, fntime, format, ident, last, store
+from obz.locater import elapsed, find, fntime, fmt, ident, last, store
 from obz.objects import Object, update, write
 from obz.threads import Repeater, launch
 
@@ -338,7 +338,7 @@ def rss(event):
         for fnm, feed in find('rss'):
             nrs += 1
             elp = elapsed(time.time()-fntime(fnm))
-            txt = format(feed)
+            txt = fmt(feed)
             event.reply(f'{nrs} {txt} {elp}')
         if not nrs:
             event.reply('no rss feed found.')

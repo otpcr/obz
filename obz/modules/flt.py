@@ -11,7 +11,7 @@ from obz.threads import name
 
 def flt(event):
     "list of bots."
-    bots = values(broker.objs)
+    bots = Fleet.bots.values()
     try:
         event.reply(Fleet.bots[int(event.args[0])])
     except (IndexError, ValueError):

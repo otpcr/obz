@@ -10,7 +10,7 @@ import time as ttime
 
 
 from obz.clients import Fleet
-from obz.locater import find, elapsed
+from obz.locater import find, elapsed, store, ident
 from obz.objects import update, write
 from obz.reactor import Event
 from obz.threads import Timer, launch
@@ -18,12 +18,14 @@ from obz.threads import Timer, launch
 
 def init():
     "start timers."
+    bot = Fleet.first()
+    if not bot:
+        return
     for _fn, obj in find("timer"):
         if "time" not in obj:
             continue
         diff = float(obj.time) - ttime.time()
         if diff > 0:
-            bot = broker.first()
             evt = Event()
             update(evt, obj)
             evt.orig = object.__repr__(bot)
@@ -221,6 +223,6 @@ def tmr(event):
     event.result.append(event.rest)
     timer = Timer(diff, event.show, thrname=event.cmd)
     update(timer, event)
-    sync(timer)
+    write(timer, store(ident(timer)))
     launch(timer.start)
     return result

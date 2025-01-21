@@ -28,7 +28,7 @@ import obz.threads
 PACKAGE = [
     'clients',
     'command',
-    'locator',
+    'locater',
     'modules',
     'objects',
     'reactor',

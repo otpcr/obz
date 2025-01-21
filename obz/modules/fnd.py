@@ -7,7 +7,7 @@
 import time
 
 
-from obz.locater import elapsed, find, fntime, format, long, skel, types
+from obz.locater import elapsed, find, fntime, fmt, long, skel, types
 
 
 "commands"
@@ -24,7 +24,7 @@ def fnd(event):
     clz = long(otype)
     nmr = 0
     for fnm, obj in find(clz, event.gets):
-        event.reply(f"{nmr} {format(obj)} {elapsed(time.time()-fntime(fnm))}")
+        event.reply(f"{nmr} {fmt(obj)} {elapsed(time.time()-fntime(fnm))}")
         nmr += 1
     if not nmr:
         event.reply("no result")
