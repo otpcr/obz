@@ -17,11 +17,11 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.client  import Buffered, Client
+from obz.client  import Client
 from obz.command import Commands, parse, scan
 from obz.config  import Config
 from obz.event   import Event
-from obz.find    import Workdir, fntime, skel
+from obz.find    import Workdir, skel
 from obz.modules import face
 from obz.object  import Object, keys
 from obz.thread  import errors, later, launch

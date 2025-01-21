@@ -19,7 +19,7 @@ import _thread
 from ..cache   import Cache
 from ..command import command
 from ..event   import Event
-from ..find    import format, ident, last, store
+from ..find    import fmt, ident, last, store
 from ..object  import Object, Obj, edit, keys, write
 from ..reactor import Reactor
 from ..thread  import later, launch
@@ -51,7 +51,7 @@ def init():
     irc = IRC()
     irc.start()
     irc.events.ready.wait()
-    debug(f'{format(Config, skip="edited,password")}')
+    debug(f'{fmt(Config, skip="edited,password")}')
     return irc
 
 
@@ -601,7 +601,7 @@ def cfg(event):
     last(config)
     if not event.sets:
         event.reply(
-                    format(
+                    fmt(
                         config,
                         keys(config),
                         skip='control,password,realname,sleep,username'.split(",")

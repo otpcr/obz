@@ -96,7 +96,7 @@ def find(clz, selector=None, index=None, deleted=False, matching=False):
 "methods"
 
 
-def format(obj, args=None, skip=None, plain=False):
+def fmt(obj, args=None, skip=None, plain=False):
     if args is None:
         args = keys(obj)
     if skip is None:
@@ -192,7 +192,7 @@ def __dir__():
     return (
         'Workdir',
         'find',
-        'format',
+        'fmt',
         'last',
         'skel'
     )

@@ -17,21 +17,37 @@ import obz
 from obz.object import *
 
 
+import obz.cache
 import obz.client
-import obz.disk
+import obz.command
+import obz.config
+import obz.event
 import obz.find
 import obz.modules
 import obz.object
-import obz.runtime
+import obz.output
+import obz.parse
+import obz.reactor
+import obz.thread
+import obz.timers
+import obz.utils
 
 
 PACKAGE = [
+    'cache',
     'client',
-    'disk',
+    'command',
+    'config',
+    'event',
     'find',
     'modules',
     'object',
-    'runtime'
+    'output',
+    'parse',
+    'reactor',
+    'thread',
+    'timers',
+    'utils'
 ]
 
 
