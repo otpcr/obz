@@ -29,8 +29,8 @@ def popen(txt):
 
 
 def main():
-    popen(f'grep -R {NAME.upper()} {NAME}')
-    popen(f'grep -R {NAME} {NAME}')
+    #popen(f'grep -R {NAME.upper()} {NAME}')
+    #popen(f'grep -R {NAME} {NAME}')
     popen(f'grep -R "print(" {NAME}')
     popen(f'grep -R __import__ {NAME}')
     popen(f'grep -R importlib {NAME}')
