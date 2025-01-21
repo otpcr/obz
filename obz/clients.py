@@ -50,7 +50,7 @@ class Fleet:
 
     @staticmethod
     def first():
-        bots =  Fleet.bots.values()
+        bots =  list(Fleet.bots.values())
         if not bots:
             bots.append(Client())
         return bots[0]

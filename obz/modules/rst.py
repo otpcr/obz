@@ -19,8 +19,12 @@ from obz.threads import later, launch
 
 
 def init():
-    rest = REST((Config.hostname, int(Config.port)), RESTHandler)
-    launch(rest.start)
+    try:
+        rest = REST((Config.hostname, int(Config.port)), RESTHandler)
+    except OSError as ex:
+        later(ex)
+        return
+    rest.start()
     return rest
 
 
@@ -58,7 +62,7 @@ class REST(HTTPServer, Object):
 
     def start(self):
         self._status = "ok"
-        self.serve_forever()
+        launch(self.serve_forever)
 
     def request(self):
         self._last = time.time()
