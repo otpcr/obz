@@ -10,8 +10,8 @@ import time as ttime
 
 
 from obz.clients import Fleet
-from obz.locater import find, elapsed, store, ident
-from obz.objects import update, write
+from obz.objects import update
+from obz.persist import find, elapsed, store, ident, write
 from obz.runtime import Event, Timer, launch
 
 

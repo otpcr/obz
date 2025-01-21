@@ -8,7 +8,7 @@
 import time
 
 
-from obz.locater import elapsed, find, fntime, fmt, long, skel, types
+from obz.persist import elapsed, find, fntime, fmt, long, skel, types
 
 
 def fnd(event):

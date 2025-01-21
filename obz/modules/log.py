@@ -8,8 +8,8 @@
 import time
 
 
-from obz.locater import elapsed, find, fntime, ident, store
-from obz.objects import Object, write
+from obz.objects import Object
+from obz.persist import elapsed, find, fntime, ident, store, write
 
 
 class Log(Object):

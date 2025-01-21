@@ -11,9 +11,9 @@ import _thread
 
 
 from obz.command import spl
-from obz.locater import find, ident, store
 from obz.modules import rss
-from obz.objects import Object, update, write
+from obz.objects import Object, update
+from obz.persist import find, ident, store, write
 
 
 importlock = _thread.allocate_lock()

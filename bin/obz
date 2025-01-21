@@ -19,7 +19,7 @@ sys.path.insert(0, os.getcwd())
 from obz.clients import Client, Config
 from obz.command import Commands, command, parse, scan
 from obz.modules import face as MODS
-from obz.locater import Workdir, pidname
+from obz.persist import Workdir, pidname
 from obz.runtime import Event, errors, later
 
 

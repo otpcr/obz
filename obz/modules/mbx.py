@@ -10,8 +10,8 @@ import os
 import time
 
 
-from obz.locater import elapsed, find, fntime, fmt, store, ident
-from obz.objects import Object, update, write
+from obz.objects import Object, update
+from obz.persist import elapsed, find, fntime, fmt, store, ident, write
 
 
 "email"

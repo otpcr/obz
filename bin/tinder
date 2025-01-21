@@ -19,11 +19,10 @@ sys.path.insert(0, os.getcwd())
 
 from obz.clients import Client, Config
 from obz.command import Commands, parse, scan
-from obz.locater import Workdir, elapsed, skel
 from obz.objects import Object, keys
 from obz.modules import face as MODS
-from obz.reactor import Event
-from obz.threads import launch, errors, later
+from obz.persist import Workdir, elapsed, skel
+from obz.runtime import Event, launch, errors, later
 
 
 "defines"

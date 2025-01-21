@@ -13,8 +13,8 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from obz.locater import Workdir, types
 from obz.objects import Default, Object
+from obz.persist import Workdir, types
 from obz.runtime import later, launch
 
 

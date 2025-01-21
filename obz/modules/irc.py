@@ -18,8 +18,8 @@ import _thread
 
 from obz.clients import Fleet
 from obz.command import command
-from obz.objects import Default, Object, edit, keys, write
-from obz.locater import fmt, ident, last, store
+from obz.objects import Default, Object, keys
+from obz.persist import edit, fmt, ident, last, store, write
 from obz.runtime import Event, Reactor, later, launch
 
 

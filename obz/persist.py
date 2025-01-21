@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0115,C0116,R0903
+# pylint: disable=C0115,C0116,R0903,W0105
 
 
 "locate objects"
@@ -7,23 +7,25 @@
 
 import datetime
 import os
+import json
 import pathlib
 import time
+import threading
 import _thread
 
 
-from obz.objects import Object, items, keys, read, update
+from obz.objects import Object, dumps, items, keys, loads, update
 
 
 p = os.path.join
 
 
-lock = _thread.allocate_lock()
+#rwlock = _thread.allocate_lock()
+rwlock = threading.RLock()
+#lock   = _thread.allocate_lock()
+lock = threading.RLock()
 
-
-class Workdir:
-
-    wdr  = ""
+"cache"
 
 
 class Cache:
@@ -44,6 +46,14 @@ class Cache:
             if matcher not in key:
                 continue
             yield Cache.objs.get(key)
+
+
+"workdir"
+
+
+class Workdir:
+
+    wdr  = ""
 
 
 def long(name):
@@ -72,6 +82,9 @@ def store(pth=""):
 
 def types():
     return os.listdir(store())
+
+
+"find"
 
 
 def fns(clz):
@@ -103,6 +116,32 @@ def find(clz, selector=None, deleted=False, matching=False):
                 continue
             res.append((fnm, obj))
         return res
+
+
+"methods"
+
+
+def edit(obj, setter, skip=False):
+    for key, val in items(setter):
+        if skip and val == "":
+            continue
+        try:
+            setattr(obj, key, int(val))
+            continue
+        except ValueError:
+            pass
+        try:
+            setattr(obj, key, float(val))
+            continue
+        except ValueError:
+            pass
+        if val in ["True", "true"]:
+            setattr(obj, key, True)
+        elif val in ["False", "false"]:
+            setattr(obj, key, False)
+        else:
+            setattr(obj, key, val)
+
 
 
 def fmt(obj, args=None, skip=None, plain=False):
@@ -178,6 +217,9 @@ def search(obj, selector, matching=None):
     return res
 
 
+"utilities"
+
+
 def elapsed(seconds, short=True):
     txt = ""
     nsec = float(seconds)
@@ -234,6 +276,33 @@ def strip(pth, nmr=3):
     return os.sep.join(pth.split(os.sep)[-nmr:])
 
 
+"disk"
+
+def cdir(pth):
+    path = pathlib.Path(pth)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def read(obj, pth):
+    with lock:
+        with open(pth, 'r', encoding='utf-8') as ofile:
+            try:
+                obj2 = loads(ofile.read())
+                update(obj, obj2)
+            except json.decoder.JSONDecodeError as ex:
+                raise DecodeError(pth) from ex
+    return pth
+
+
+def write(obj, pth):
+    with lock:
+        cdir(pth)
+        txt = dumps(obj, indent=4)
+        with open(pth, 'w', encoding='utf-8') as ofile:
+            ofile.write(txt)
+    return pth
+
+
 def __dir__():
     return (
         'Cache',
@@ -242,5 +311,7 @@ def __dir__():
         'find',
         'fmt',
         'last',
-        'skel'
+        'read',
+        'skel',
+        'write'
     )

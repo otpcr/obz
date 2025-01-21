@@ -9,8 +9,8 @@ import datetime
 import time
 
 
-from obz.locater import Cache, elapsed
 from obz.objects import Object, construct, keys
+from obz.persist import Cache, elapsed
 from obz.runtime import Event, Repeater
 
 

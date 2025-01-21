@@ -8,7 +8,7 @@
 import time
 
 
-from obz.locater import elapsed
+from obz.persist import elapsed
 
 
 STARTTIME = time.time()

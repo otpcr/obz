@@ -9,8 +9,8 @@ import threading
 import time
 
 
-from obz.locater import elapsed
 from obz.objects import Object, update
+from obz.persist import elapsed
 
 
 STARTTIME = time.time()

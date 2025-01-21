@@ -20,8 +20,8 @@ from urllib.parse import quote_plus, urlencode
 
 from obz.clients import Fleet
 from obz.command import spl
-from obz.locater import elapsed, find, fntime, fmt, ident, last, store
-from obz.objects import Object, update, write
+from obz.objects import Object, update
+from obz.persist import elapsed, find, fntime, fmt, ident, last, store, write
 from obz.runtime import Repeater, launch
 
 
