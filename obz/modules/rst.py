@@ -15,7 +15,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 
 from obz.locater import Workdir, types
 from obz.objects import Default, Object
-from obz.threads import later, launch
+from obz.runtime import later, launch
 
 
 def init():

@@ -20,8 +20,7 @@ from obz.clients import Fleet
 from obz.command import command
 from obz.objects import Default, Object, edit, keys, write
 from obz.locater import fmt, ident, last, store
-from obz.reactor import Event, Reactor
-from obz.threads import later, launch
+from obz.runtime import Event, Reactor, later, launch
 
 
 "defines"

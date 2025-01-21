@@ -11,8 +11,7 @@ import time
 
 from obz.locater import Cache, elapsed
 from obz.objects import Object, construct, keys
-from obz.reactor import Event
-from obz.threads import Repeater
+from obz.runtime import Event, Repeater
 
 
 DAY = 24*60*60

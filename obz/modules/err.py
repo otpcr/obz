@@ -5,7 +5,7 @@
 "errors"
 
 
-from obz.threads import Errors
+from obz.runtime import Errors
 
 
 def err(event):

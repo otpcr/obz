@@ -11,8 +11,7 @@ import threading
 
 from obz.command import command
 from obz.objects import Default
-from obz.reactor import Reactor
-from obz.threads import launch
+from obz.runtime import Reactor, launch
 
 
 class Client(Reactor):

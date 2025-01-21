@@ -22,7 +22,7 @@ from obz.clients import Fleet
 from obz.command import spl
 from obz.locater import elapsed, find, fntime, fmt, ident, last, store
 from obz.objects import Object, update, write
-from obz.threads import Repeater, launch
+from obz.runtime import Repeater, launch
 
 
 "defines"

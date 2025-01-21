@@ -20,8 +20,7 @@ from obz.clients import Client, Config
 from obz.command import Commands, command, parse, scan
 from obz.modules import face as MODS
 from obz.locater import Workdir, pidname
-from obz.reactor import Event
-from obz.threads import errors, later
+from obz.runtime import Event, errors, later
 
 
 cfg = Config()

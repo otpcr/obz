@@ -14,7 +14,7 @@ import time
 
 from obz.objects import Object
 from obz.clients import Fleet
-from obz.threads import launch
+from obz.runtime import launch
 
 
 def init():

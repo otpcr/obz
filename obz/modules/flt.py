@@ -5,7 +5,7 @@
 
 
 from obz.clients import Fleet
-from obz.threads import name
+from obz.runtime import name
 
 
 def flt(event):
