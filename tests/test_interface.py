@@ -18,21 +18,20 @@ from obz.objects import *
 
 
 import obz.clients
-import obz.locater
+import obz.command
 import obz.modules
 import obz.objects
-import obz.reactor
-import obz.threads
+import obz.persist
+import obz.runtime
 
 
 PACKAGE = [
     'clients',
     'command',
-    'locater',
     'modules',
     'objects',
-    'reactor',
-    'threads',
+    'persist',
+    'runtime'
 ]
 
 
