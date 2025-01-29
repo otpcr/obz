@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0115,C0116,W0105,R0903
+# pylint: disable=C0115,C0116,W0105,R0903,E0402
 
 
 "rich site syndicate"
@@ -7,10 +7,12 @@
 
 import html
 import html.parser
+import os
 import re
 import time
 import urllib
 import urllib.request
+import uuid
 import _thread
 
 
@@ -18,11 +20,11 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from obz.clients import Fleet
-from obz.command import spl
-from obz.objects import Object, update
-from obz.persist import elapsed, find, fntime, fmt, ident, last, store, write
-from obz.runtime import Repeater, launch
+from ..clients import Fleet
+from ..command import spl
+from ..objects import Object, fmt, update
+from ..persist import elapsed, find, fntime, ident, last, store, write
+from ..runtime import Repeater, launch
 
 
 "defines"
@@ -32,6 +34,8 @@ DEBUG = False
 
 
 fetchlock  = _thread.allocate_lock()
+importlock = _thread.allocate_lock()
+skipped    = []
 
 
 "init"
@@ -43,7 +47,7 @@ def init():
     return fetcher
 
 
-"feed"
+"data"
 
 
 class Feed(Object):
@@ -53,9 +57,6 @@ class Feed(Object):
         self.link = ""
 
 
-"rss"
-
-
 class Rss(Object):
 
     def __init__(self):
@@ -63,9 +64,6 @@ class Rss(Object):
         self.display_list = 'title,link,author'
         self.insertid     = None
         self.rss          = ''
-
-
-"urls"
 
 
 class Urls(Object):
@@ -124,7 +122,7 @@ class Fetcher(Object):
                 if uurl in seen:
                     continue
                 if self.dosave:
-                    write(fed, store(ident(fed)))
+                    write(fed)
                 result.append(fed)
             setattr(self.seen, feed.rss, urls)
             if not self.seenfn:
@@ -292,7 +290,7 @@ def dpl(event):
         if feed:
             update(feed, setter)
             write(feed, fnm)
-    event.ok()
+    event.done()
 
 
 def nme(event):
@@ -304,7 +302,7 @@ def nme(event):
         if feed:
             feed.name = event.args[1]
             write(feed, fnm)
-    event.ok()
+    event.done()
 
 
 def rem(event):
@@ -317,7 +315,7 @@ def rem(event):
         if feed:
             feed.__deleted__ = True
             write(feed, fnm)
-    event.ok()
+    event.done()
 
 
 def res(event):
@@ -330,7 +328,7 @@ def res(event):
         if feed:
             feed.__deleted__ = False
             write(feed, fnm)
-    event.ok()
+    event.done()
 
 
 def rss(event):
@@ -353,8 +351,8 @@ def rss(event):
             return
     feed = Rss()
     feed.rss = event.args[0]
-    write(feed, store(ident(feed)))
-    event.ok()
+    write(feed)
+    event.done()
 
 
 def syn(event):
@@ -368,3 +366,148 @@ def syn(event):
         thr.join()
         nrs += 1
     event.reply(f"{nrs} feeds synced")
+
+
+"OPML"
+
+
+class OPML:
+
+    @staticmethod
+    def getnames(line):
+        return [x.split('="')[0]  for x in line.split()]
+
+    @staticmethod
+    def getvalue(line, attr):
+        lne = ''
+        index1 = line.find(f'{attr}="')
+        if index1 == -1:
+            return lne
+        index1 += len(attr) + 2
+        index2 = line.find('"', index1)
+        if index2 == -1:
+            index2 = line.find('/>', index1)
+        if index2 == -1:
+            return lne
+        lne = line[index1:index2]
+        if 'CDATA' in lne:
+            lne = lne.replace('![CDATA[', '')
+            lne = lne.replace(']]', '')
+            #lne = lne[1:-1]
+        return lne
+
+    @staticmethod
+    def getattrs(line, token):
+        index = 0
+        result = []
+        stop = False
+        while not stop:
+            index1 = line.find(f'<{token} ', index)
+            if index1 == -1:
+                return result
+            index1 += len(token) + 2
+            index2 = line.find('/>', index1)
+            if index2 == -1:
+                return result
+            result.append(line[index1:index2])
+            index = index2
+        return result
+
+    @staticmethod
+    def parse(txt, toke="outline", itemz=None):
+        if itemz is None:
+            itemz = ",".join(OPML.getnames(txt))
+        result = []
+        for attrz in OPML.getattrs(txt, toke):
+            if not attrz:
+                continue
+            obj = Object()
+            for itm in spl(itemz):
+                if itm == "link":
+                    itm = "href"
+                val = OPML.getvalue(attrz, itm)
+                if not val:
+                    continue
+                if itm == "href":
+                    itm = "link"
+                setattr(obj, itm, val.strip())
+            result.append(obj)
+        return result
+
+
+"utilities"
+
+
+def attrs(obj, txt):
+    update(obj, OPML.parse(txt))
+
+
+def shortid():
+    return str(uuid.uuid4())[:8]
+
+
+"commands"
+
+
+def exp(event):
+    event.reply(TEMPLATE)
+    nrs = 0
+    for _fn, ooo in find("rss"):
+        nrs += 1
+        obj = Rss()
+        update(obj, ooo)
+        name = f"url{nrs}"
+        txt = f'<outline name="{name}" display_list="{obj.display_list}" xmlUrl="{obj.rss}"/>'
+        event.reply(" "*12 + txt)
+    event.reply(" "*8 + "</outline>")
+    event.reply("    <body>")
+    event.reply("</opml>")
+
+
+def imp(event):
+    if not event.args:
+        event.reply("imp <filename>")
+        return
+    fnm = event.args[0]
+    if not os.path.exists(fnm):
+        event.reply(f"no {fnm} file found.")
+        return
+    with open(fnm, "r", encoding="utf-8") as file:
+        txt = file.read()
+    prs = OPML()
+    nrs = 0
+    nrskip = 0
+    insertid = shortid()
+    with importlock:
+        for obj in prs.parse(txt, 'outline', "name,display_list,xmlUrl"):
+            url = obj.xmlUrl
+            if url in skipped:
+                continue
+            if not url.startswith("http"):
+                continue
+            has = list(find("rss", {'rss': url}, matching=True))
+            if has:
+                skipped.append(url)
+                nrskip += 1
+                continue
+            feed = Rss()
+            update(feed, obj)
+            feed.rss = obj.xmlUrl
+            feed.insertid = insertid
+            write(feed)
+            nrs += 1
+    if nrskip:
+        event.reply(f"skipped {nrskip} urls.")
+    if nrs:
+        event.reply(f"added {nrs} urls.")
+
+
+"template"
+
+
+TEMPLATE = """<opml version="1.0">
+    <head>
+        <title>OPML</title>
+    </head>
+    <body>
+        <outline title="opml" text="rss feeds">"""

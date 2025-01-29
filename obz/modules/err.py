@@ -1,11 +1,11 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0116
+# pylint: disable=C0116,E0402
 
 
 "errors"
 
 
-from obz.runtime import Errors
+from ..runtime import Errors
 
 
 def err(event):

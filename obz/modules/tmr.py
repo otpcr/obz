@@ -1,4 +1,5 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0115,C0116,R0912,W0105,E0402
 
 
 "timer"
@@ -9,27 +10,12 @@ import re
 import time as ttime
 
 
-from obz.clients import Fleet
-from obz.objects import update
-from obz.persist import find, elapsed, store, ident, write
-from obz.runtime import Event, Timer, launch
+from ..objects import update
+from ..persist import find, elapsed, write
+from ..runtime import Event, Fleet, Timer, launch
 
 
-def init():
-    "start timers."
-    bot = Fleet.first()
-    if not bot:
-        return
-    for _fn, obj in find("timer"):
-        if "time" not in obj:
-            continue
-        diff = float(obj.time) - ttime.time()
-        if diff > 0:
-            evt = Event()
-            update(evt, obj)
-            evt.orig = object.__repr__(bot)
-            timer = Timer(diff, evt.show)
-            launch(timer.start)
+"defines"
 
 
 MONTHS = [
@@ -57,13 +43,33 @@ FORMATS = [
 ]
 
 
+"init"
+
+
+def init():
+    for _fn, obj in find("timer"):
+        if "time" not in dir(obj):
+            continue
+        diff = float(obj.time) - ttime.time()
+        if diff > 0:
+            evt = Event()
+            update(evt, obj)
+            timer = Timer(diff, Fleet.announce, evt.rest)
+            timer.start()
+
+
+"exceptions"
+
+
 class NoDate(Exception):
 
-    "NoDate"
+    pass
+
+
+"utilities"
 
 
 def extract_date(daystr):
-    "extract date from string."
     res = None
     for fmt in FORMATS:
         try:
@@ -75,7 +81,6 @@ def extract_date(daystr):
 
 
 def get_day(daystr):
-    "return day from string."
     day = None
     month = None
     yea = None
@@ -101,7 +106,6 @@ def get_day(daystr):
 
 
 def get_hour(daystr):
-    "return hour from string."
     try:
         hmsre = re.search(r'(\d+):(\d+):(\d+)', str(daystr))
         hours = 60 * 60 * (int(hmsre.group(1)))
@@ -123,7 +127,6 @@ def get_hour(daystr):
 
 
 def get_time(txt):
-    "parse full time string."
     try:
         target = get_day(txt)
     except NoDate:
@@ -135,7 +138,6 @@ def get_time(txt):
 
 
 def parse_time(txt):
-    "parse time from string."
     seconds = 0
     target = 0
     txt = str(txt)
@@ -158,7 +160,6 @@ def parse_time(txt):
 
 
 def to_day(daystr):
-    "parse day from string."
     previous = ""
     line = ""
     daystr = str(daystr)
@@ -176,8 +177,10 @@ def to_day(daystr):
 
 
 def today():
-    "return date."
     return str(datetime.datetime.today()).split()[0]
+
+
+"commands"
 
 
 def tmr(event):
@@ -190,6 +193,8 @@ def tmr(event):
             if lap > 0:
                 event.reply(f'{nmr} {obj.txt} {elapsed(lap)}')
                 nmr += 1
+        if not nmr:
+            event.reply("no timers.")
         return result
     seconds = 0
     line = ""
@@ -218,10 +223,10 @@ def tmr(event):
     event.time = target
     diff = target - ttime.time()
     event.reply("ok " +  elapsed(diff))
-    event.result = []
+    del event.args
     event.result.append(event.rest)
-    timer = Timer(diff, event.show, thrname=event.cmd)
+    timer = Timer(diff, event.display)
     update(timer, event)
-    write(timer, store(ident(timer)))
+    write(timer)
     launch(timer.start)
     return result

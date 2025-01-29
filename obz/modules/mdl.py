@@ -1,17 +1,20 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0115,C0116,C0209,W0105
+# pylint: disable=C0115,C0116,C0209,W0105,E0402
 
 
-"**Genocide** model of the Netherlands since **4 March 2019**"
+"Genocide model of the Netherlands since 4 March 2019"
 
 
 import datetime
 import time
 
 
-from obz.objects import Object, construct, keys
-from obz.persist import Cache, elapsed
-from obz.runtime import Event, Repeater
+from ..objects import Object, construct, keys
+from ..persist import elapsed
+from ..runtime import Event, Fleet, Repeater
+
+
+"defines"
 
 
 DAY = 24*60*60
@@ -19,6 +22,9 @@ YEAR = 365*DAY
 SOURCE = "https://github.com/bthate/genocide"
 STARTDATE = "2019-03-04 00:00:00"
 STARTTIME = time.mktime(time.strptime(STARTDATE, "%Y-%m-%d %H:%M:%S"))
+
+
+"init"
 
 
 def init():
@@ -33,6 +39,9 @@ def init():
             sec = seconds(val)
             repeater = Repeater(sec, cbstats, evt, thrname=aliases.get(key))
             repeater.start()
+
+
+"model"
 
 
 oor = """"Totaal onderliggende doodsoorzaken (aantal)";
@@ -271,6 +280,9 @@ construct(oorzaak, zip(oor, aantal))
 oorzaken = Object()
 
 
+"utilities"
+
+
 def getalias(txt):
     result = ""
     for key, value in aliases.items():
@@ -319,6 +331,9 @@ def hourly():
         cbnow(evt)
 
 
+"callbacks"
+
+
 def cbnow(_evt):
     delta = time.time() - STARTTIME
     txt = elapsed(delta) + " "
@@ -329,8 +344,7 @@ def cbnow(_evt):
         nrtimes = int(delta/needed)
         txt += f"{getalias(nme)} {nrtimes} | "
     txt += "https://pypi.org/project/genocide"
-    for obj in Cache.typed("IRC"):
-        obj.announce(txt)
+    Fleet.announce(txt)
 
 
 def cbstats(evt):
@@ -352,8 +366,10 @@ def cbstats(evt):
             nryear,
             elapsed(needed)
         )
-        for obj in Cache.typed("IRC"):
-            obj.announce(txt)
+        Fleet.announce(txt)
+
+
+"commands"
 
 
 def dis(event):
@@ -390,6 +406,9 @@ def now(event):
         event.reply(txt)
 
 
+"runtime"
+
+
 def boot():
     _nr = -1
     for key in keys(oorzaak):
@@ -418,14 +437,6 @@ def boot():
         nms = " ".join(atl.split()[1:]).capitalize()
         nms = nms.strip()
         setattr(oorzaken, nms, aantal[_nr])
-
-
-def __dir__():
-    return (
-            'init',
-            'dis',
-            'now'
-           )
 
 
 boot()

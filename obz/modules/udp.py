@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0115,C0116,R0903,W0105
+# pylint: disable=C0115,C0116,R0903,W0105,E0402
 
 
 "udp to irc relay"
@@ -12,9 +12,15 @@ import threading
 import time
 
 
-from obz.objects import Object
-from obz.clients import Fleet
-from obz.runtime import launch
+from ..clients import Fleet
+from ..objects import Object
+from ..runtime import launch
+
+
+DEBUG = False
+
+
+"init"
 
 
 def init():
@@ -23,11 +29,17 @@ def init():
     return udpd
 
 
+"config"
+
+
 class Cfg(Object):
 
     addr = ""
     host = "localhost"
     port = 5500
+
+
+"udp"
 
 
 class UDP(Object):
@@ -74,9 +86,17 @@ class UDP(Object):
         launch(self.loop)
 
 
+"utilities"
+
+
 def toudp(host, port, txt):
+    if DEBUG:
+        return
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.sendto(bytes(txt.strip(), "utf-8"), (host, port))
+
+
+"command"
 
 
 def udp(event):
@@ -89,6 +109,7 @@ def udp(event):
                          [],
                          0.0
                         )[0]:
+        event.reply("udp <text>")
         return
     size = 0
     while 1:

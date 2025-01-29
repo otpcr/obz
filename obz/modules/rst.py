@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0103,C0115,C0116,C0209,R0903
+# pylint: disable=C0103,C0115,C0116,C0209,C0301,R0903,W0105,E0402
 
 
 "rest"
@@ -10,12 +10,19 @@ import sys
 import time
 
 
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server  import HTTPServer, BaseHTTPRequestHandler
 
 
-from obz.objects import Default, Object
-from obz.persist import Workdir, types
-from obz.runtime import later, launch
+from ..clients import Default
+from ..objects import Object
+from ..persist import Workdir, types
+from ..runtime import later, launch
+
+
+DEBUG = False
+
+
+"init"
 
 
 def init():
@@ -23,23 +30,22 @@ def init():
         rest = REST((Config.hostname, int(Config.port)), RESTHandler)
     except OSError as ex:
         later(ex)
-        return
-    rest.start()
+        rest = None
+    if rest is not None:
+        rest.start()
     return rest
 
 
-def html(txt):
-    return """<!doctype html>
-<html>
-   %s
-</html>
-""" % txt
+"config"
 
 
 class Config(Default):
 
     hostname = "localhost"
     port     = 10102
+
+
+"rest"
 
 
 class REST(HTTPServer, Object):
@@ -91,6 +97,8 @@ class RESTHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        if DEBUG:
+            return
         if "favicon" in self.path:
             return
         if self.path == "/":
@@ -100,12 +108,21 @@ class RESTHandler(BaseHTTPRequestHandler):
                 txt += f'<a href="http://{Config.hostname}:{Config.port}/{fnm}">{fnm}</a><br>\n'
             self.send(html(txt.strip()))
             return
-        fnm = Workdir.wdr + os.sep + "store" + os.sep + self.path
+        fnm = Workdir.wdr + os.sep + "store" + self.path
+        fnm = os.path.abspath(fnm)
+        if os.path.isdir(fnm):
+            self.write_header("text/html")
+            txt = ""
+            for fnn in os.listdir(fnm):
+                filename = self.path  + os.sep + fnn
+                txt += f'<a href="http://{Config.hostname}:{Config.port}/{filename}">{filename}</a><br>\n'
+            self.send(txt.strip())
+            return
         try:
             with open(fnm, "r", encoding="utf-8") as file:
                 txt = file.read()
                 file.close()
-            self.write_header("txt/plain")
+            self.write_header("text/html")
             self.send(html(txt))
         except (TypeError, FileNotFoundError, IsADirectoryError) as ex:
             self.send_response(404)
@@ -114,3 +131,14 @@ class RESTHandler(BaseHTTPRequestHandler):
 
     def log(self, code):
         pass
+
+
+"utilities"
+
+
+def html(txt):
+    return """<!doctype html>
+<html>
+   %s
+</html>
+""" % txt

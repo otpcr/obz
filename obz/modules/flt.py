@@ -1,17 +1,18 @@
 # This file is placed in the Public Domain.
+# pylint: disable=C0116,E0402
 
 
 "fleet"
 
 
-from obz.clients import Fleet
-from obz.runtime import name
+from ..clients import Fleet
+from ..objects import fmt
+from ..runtime import name
 
 
 def flt(event):
-    "list of bots."
     bots = Fleet.bots.values()
     try:
-        event.reply(Fleet.bots[int(event.args[0])])
-    except (IndexError, ValueError):
+        event.reply(fmt(list(Fleet.bots.values())[int(event.args[0])]))
+    except (KeyError, IndexError, ValueError):
         event.reply(",".join([name(x).split(".")[-1] for x in bots]))

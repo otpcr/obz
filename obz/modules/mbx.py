@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0103,C0115,C0116,C0209,C0301,R0903,W0105
+# pylint: disable=C0103,C0115,C0116,C0209,C0301,R0903,W0105,E0402
 
 
 "mailbox"
@@ -10,8 +10,8 @@ import os
 import time
 
 
-from obz.objects import Object, update
-from obz.persist import elapsed, find, fntime, fmt, store, ident, write
+from ..objects import Object, fmt, update
+from ..persist import elapsed, find, fntime, write
 
 
 "email"
@@ -22,6 +22,9 @@ class Email(Object):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.text = ""
+
+
+"utility"
 
 
 def todate(date):
@@ -89,10 +92,13 @@ def eml(event):
         for fnm, o in result:
             nrs += 1
             event.reply(f'{nrs} {format(o, ["From", "Subject"])} {elapsed(time.time() - fntime(fnm))}')
+    if nrs == -1:
+        event.reply("no emails found.")
 
 
 def mbx(event):
     if not event.args:
+        event.reply("mbx <path>")
         return
     fn = os.path.expanduser(event.args[0])
     event.reply("reading from %s" % fn)
@@ -115,7 +121,7 @@ def mbx(event):
             if payload.get_content_type() == 'text/plain':
                 o.text += payload.get_payload()
         o.text = o.text.replace("\\n", "\n")
-        write(o, store(ident(o)))
+        write(o)
         nr += 1
     if nr:
         event.reply("ok %s" % nr)
