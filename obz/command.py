@@ -69,6 +69,7 @@ class Commands:
 
 class Table:
 
+    disable = ["wsd"]
     mods = {}
 
     @staticmethod
@@ -96,19 +97,20 @@ class Table:
     @staticmethod
     def load(name):
         pname = ".".join(name.split(".")[:-1])
-        mod = Table.mods.get(name)
-        if not mod:
+        module = Table.mods.get(name)
+        if not module:
             try:
-                Table.mods[name] = mod = importlib.import_module(name, pname)
-            except Exception as ex:
-                later(ex)
-        return mod
+                Table.mods[name] = module = importlib.import_module(name, pname)
+            except Exception as exc:
+                later(exc)
+        return module
 
     @staticmethod
     def modules(path):
         return [
                 x[:-3] for x in os.listdir(path)
-                if x.endswith(".py") and not x.startswith("__")
+                if x.endswith(".py") and not x.startswith("__") and
+                x not in Table.disable
                ]
 
     @staticmethod

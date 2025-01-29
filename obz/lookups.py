@@ -36,5 +36,5 @@ NAMES = {
     "tmr": "obz.modules.tmr",
     "udp": "obz.modules.udp",
     "upt": "obz.modules.upt",
-    "wsd": "obz.modules.wsd"
+#    "wsd": "obz.modules.wsd"
 }

@@ -5,7 +5,6 @@
 "runtime"
 
 
-import os
 import queue
 import threading
 import time
@@ -50,8 +49,32 @@ class Errors:
 
     errors = []
 
+
     @staticmethod
     def format(exc):
+        exctype, excvalue, trb = type(exc), exc, exc.__traceback__
+        trace = traceback.extract_tb(trb)
+        result = ""
+        for i in trace:
+            fname = i[0]
+            if not "obz" in fname:
+                continue
+            linenr = i[1]
+            func = i[2]
+            plugfile = fname[:-3].split("/")
+            mod = []
+            for i in plugfile[::-1]:
+                if i in ['obz']:
+                    break
+                mod.append(i)
+            ownname = '.'.join(mod)
+            result += f"{ownname}:{linenr} {func}"
+        del trace
+        res = f"{exctype} {result[:-3]} {excvalue}"
+        return res
+
+    @staticmethod
+    def full(exc):
         return traceback.format_exception(
             type(exc),
             exc,
@@ -65,32 +88,11 @@ def errors():
 
 def later(exc):
     excp = exc.with_traceback(exc.__traceback__)
-    fmt = msg(excp)
+    fmt = Errors.format(excp)
     if fmt not in Errors.errors:
         Errors.errors.append(fmt)
 
 
-def msg(exc):
-    exctype, excvalue, tb = type(exc), exc, exc.__traceback__
-    trace = traceback.extract_tb(tb)
-    result = ""
-    for i in trace:
-        fname = i[0]
-        if not "obz" in fname:
-            continue
-        linenr = i[1]
-        func = i[2]
-        plugfile = fname[:-3].split("/")
-        mod = []
-        for i in plugfile[::-1]:
-            if i in ['obz']:
-                break
-            mod.append(i)
-        ownname = '.'.join(mod)
-        result += "%s:%s %s | " % (ownname, linenr, func)
-    del trace
-    res = f"{exctype} {excvalue} {result}"
-    return res
 
 
 "reactor"

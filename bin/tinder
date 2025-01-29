@@ -17,11 +17,11 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from obz.clients import Buffered, Client, Config
+from obz.clients import Buffered, Config
 from obz.command import Commands, Table, command, parse
 from obz.objects import Object, keys
 from obz.persist import Workdir, elapsed, skel
-from obz.runtime import Event, Reactor, launch, errors, later
+from obz.runtime import Event, launch, errors, later
 
 
 import obz.modules as MODS
@@ -95,9 +95,9 @@ def banner():
 
 def consume(evts):
     done = []
-    for evt in evts:
-        evt.wait()
-        done.append(evt)
+    for event in evts:
+        event.wait()
+        done.append(event)
     for todo in done:
         events.remove(todo)
     return done
@@ -107,11 +107,11 @@ def payload(clt):
     nmr = 0
     for cmdd in keys(param):
         for ex in getattr(param, cmdd, [""]):
-            evt = Event()
-            evt.txt = cmdd + " " + ex
-            evt.type = "command"
-            events.append(evt)
-            clt.put(evt)
+            event = Event()
+            event.txt = cmdd + " " + ex
+            event.type = "command"
+            events.append(event)
+            clt.put(event)
             nmr += 1
     return nmr
 
