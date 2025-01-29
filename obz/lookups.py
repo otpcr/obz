@@ -7,6 +7,7 @@
 NAMES = {
     "cfg": "obz.modules.irc",
     "cor": "obz.modules.mbx",
+    "dbg": "obz.modules.dbg",
     "dis": "obz.modules.mdl",
     "dne": "obz.modules.tdo",
     "dpl": "obz.modules.rss",

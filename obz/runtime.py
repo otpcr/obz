@@ -47,8 +47,8 @@ class Default:
 
 class Errors:
 
+    name = Default.__module__.rsplit(".", maxsplit=2)[-2]
     errors = []
-
 
     @staticmethod
     def format(exc):
@@ -57,20 +57,20 @@ class Errors:
         result = ""
         for i in trace:
             fname = i[0]
-            if not "obz" in fname:
+            if not Errors.name in fname:
                 continue
             linenr = i[1]
             func = i[2]
             plugfile = fname[:-3].split("/")
             mod = []
             for i in plugfile[::-1]:
-                if i in ['obz']:
-                    break
                 mod.append(i)
-            ownname = '.'.join(mod)
-            result += f"{ownname}:{linenr} {func}"
+                if Errors.name == i:
+                    break
+            ownname = '.'.join(mod[::-1])
+            result += f"{ownname}:{linenr} "
         del trace
-        res = f"{exctype} {result[:-3]} {excvalue}"
+        res = f"{exctype} {result[:-1]} {excvalue}"
         return res
 
     @staticmethod
