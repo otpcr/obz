@@ -18,7 +18,6 @@ import _thread
 
 from ..clients import output
 from ..command import command
-from ..modules import llm
 from ..objects import Object, edit, fmt, keys
 from ..persist import ident, last, write
 from ..runtime import Default, Event, Fleet, Reactor, later, launch
@@ -596,9 +595,6 @@ def cb_privmsg(evt):
             cmnd = True
         if cmnd:
             command(evt)
-            print(evt)
-        else:
-            launch(llm.cb_llm, evt)
 
 
 def cb_quit(evt):

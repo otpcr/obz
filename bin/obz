@@ -58,6 +58,9 @@ class CLI(Client):
         Client.__init__(self)
         self.register("command", command)
 
+    def announce(self, txt):
+        pass
+
     def raw(self, txt):
         output(txt.encode('utf-8', 'replace').decode("utf-8"))
 
@@ -65,7 +68,7 @@ class CLI(Client):
 class Console(CLI):
 
     def announce(self, txt):
-        print(txt)
+        pass
 
     def callback(self, evt):
         CLI.callback(self, evt)
