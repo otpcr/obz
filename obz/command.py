@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C0115,C0116,R0903,R0912,W0105,W0612,W0613,W0718,E0402
+# pylint: disable=C0115,C0116,C0415,R0903,R0912,W0105,W0612,W0613,W0718,E0402
 
 
 "command"
@@ -14,23 +14,24 @@ import threading
 from .runtime import Default, Fleet, later, launch
 
 
-try:
-    from .lookups import NAMES
-except Exception as ex:
-    later(ex)
-    NAMES = {}
+"locks"
 
 
-def locked(func, *args, **kwargs):
-
-    def locker(*args, **kwargs):
-        with lock:
-            return func(*args, **kwargs)
-
-    return locker
+initlock = threading.RLock()
+loadlock = threading.RLock()
+lock     = threading.RLock()
 
 
-lock = threading.RLock()
+"defines"
+
+
+def gettable():
+    try:
+        from .lookups import NAMES as names
+    except Exception as ex:
+        later(ex)
+        names = {}
+    return names
 
 
 "commands"
@@ -39,7 +40,7 @@ lock = threading.RLock()
 class Commands:
 
     cmds = {}
-    names = NAMES
+    names = gettable()
 
     @staticmethod
     def add(func, mod=None):
@@ -82,28 +83,30 @@ class Table:
 
     @staticmethod
     def inits(names, pname):
-        mods = []
-        for name in spl(names):
-            mname = pname + "." + name
-            if not mname:
-                continue
-            mod = Table.load(mname)
-            if not mod:
-                continue
-            thr = launch(mod.init)
-            mods.append((mod, thr))
-        return mods
+        with initlock:
+            mods = []
+            for name in spl(names):
+                mname = pname + "." + name
+                if not mname:
+                    continue
+                mod = Table.load(mname)
+                if not mod:
+                    continue
+                thr = launch(mod.init)
+                mods.append((mod, thr))
+            return mods
 
     @staticmethod
     def load(name):
-        pname = ".".join(name.split(".")[:-1])
-        module = Table.mods.get(name)
-        if not module:
-            try:
-                Table.mods[name] = module = importlib.import_module(name, pname)
-            except Exception as exc:
-                later(exc)
-        return module
+        with loadlock:
+            pname = ".".join(name.split(".")[:-1])
+            module = Table.mods.get(name)
+            if not module:
+                try:
+                    Table.mods[name] = module = importlib.import_module(name, pname)
+                except Exception as exc:
+                    later(exc)
+            return module
 
     @staticmethod
     def modules(path):
@@ -141,7 +144,7 @@ def command(evt):
     parse(evt)
     func = Commands.get(evt.cmd)
     if not func:
-        mname = NAMES.get(evt.cmd)
+        mname = Commands.names.get(evt.cmd)
         if mname:
             mod = Table.load(mname)
             Commands.scan(mod)

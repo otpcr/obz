@@ -18,6 +18,7 @@ import _thread
 
 from ..clients import output
 from ..command import command
+from ..modules import llm
 from ..objects import Object, edit, fmt, keys
 from ..persist import ident, last, write
 from ..runtime import Default, Event, Fleet, Reactor, later, launch
@@ -44,10 +45,10 @@ def debug(txt):
 
 
 def init():
-    debug(f'{fmt(Config, skip="edited,password")}')
     irc = IRC()
     irc.start()
     irc.events.ready.wait()
+    debug(f'{fmt(Config, skip="edited,password")}')
     return irc
 
 
@@ -72,6 +73,7 @@ class Config(Default):
 
     def __init__(self):
         Default.__init__(self)
+        self.control = Config.control
         self.channel = Config.channel
         self.commands = Config.commands
         self.nick = Config.nick
@@ -557,8 +559,10 @@ def cb_h904(evt):
 def cb_kill(bot, evt):
     pass
 
+
 def cb_log(evt):
     pass
+
 
 def cb_ready(evt):
     bot = Fleet.get(evt.orig)
@@ -582,16 +586,19 @@ def cb_privmsg(evt):
     if not bot.cfg.commands:
         return
     if evt.txt:
-        if evt.txt[0] in ['!',]:
-            evt.txt = evt.txt[1:]
-        elif evt.txt.startswith(f'{bot.cfg.nick}:'):
+        cmnd = False
+        if evt.txt.startswith(f'{bot.cfg.nick}:'):
             evt.txt = evt.txt[len(bot.cfg.nick)+1:]
-        else:
-            return
-        if evt.txt:
+            cmnd = True
+        elif evt.txt[0] == bot.cfg.control:
+            evt.txt = evt.txt[1:]
             evt.txt = evt.txt[0].lower() + evt.txt[1:]
-        if evt.txt:
+            cmnd = True
+        if cmnd:
             command(evt)
+            print(evt)
+        else:
+            launch(llm.cb_llm, evt)
 
 
 def cb_quit(evt):

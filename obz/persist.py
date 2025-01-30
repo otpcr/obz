@@ -26,16 +26,6 @@ findlock = threading.RLock()
 lock     = threading.RLock()
 
 
-def locked(func, *args, **kwargs):
-
-    def locker(*args, **kwargs):
-        __doc__ = func.__doc__
-        with findlock:
-            return func(*args, **kwargs)
-
-    return locker
-
-
 "exceptions"
 
 
@@ -148,7 +138,6 @@ def fns(clz):
                         yield p(ddd, fll)
 
 
-#@locked
 def find(clz, selector=None, deleted=False, matching=False):
     skel()
     pth = long(clz)

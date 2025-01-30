@@ -60,7 +60,6 @@ class Errors:
             if not Errors.name in fname:
                 continue
             linenr = i[1]
-            func = i[2]
             plugfile = fname[:-3].split("/")
             mod = []
             for i in plugfile[::-1]:

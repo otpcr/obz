@@ -17,7 +17,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from obz.clients import Client, Config, output
-from obz.command import NAMES, Commands, Table, command, parse, spl
+from obz.command import Commands, Table, command, parse, spl
 from obz.objects import dumps
 from obz.persist import Workdir, pidname
 from obz.runtime import Event, Fleet, errors, later, launch
@@ -155,9 +155,11 @@ def background():
 
 
 def console():
+    control()
     import readline # noqa: F401
     Commands.add(cmd)
     parse(cfg, " ".join(sys.argv[1:]))
+    
     Config.init = cfg.sets.init or Config.init
     Config.opts = cfg.opts
     if "v" in cfg.opts:
@@ -187,7 +189,6 @@ def control():
     command(evt)
     evt.wait()
 
-
 def service():
     privileges()
     pidfile(pidname(Config.name))
@@ -200,7 +201,7 @@ def service():
 
 
 def cmd(event):
-    event.reply(",".join(sorted(NAMES)))
+    event.reply(",".join(sorted(Commands.names)))
 
 
 def srv(event):
@@ -277,7 +278,6 @@ def main():
         wrap(service)
     else:
         control()
-
 
 
 if __name__ == "__main__":

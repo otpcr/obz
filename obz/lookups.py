@@ -17,7 +17,6 @@ NAMES = {
     "flt": "obz.modules.flt",
     "fnd": "obz.modules.fnd",
     "imp": "obz.modules.rss",
-    "llm": "obz.modules.llm",
     "lne": "obz.modules.slg",
     "log": "obz.modules.log",
     "mbx": "obz.modules.mbx",
